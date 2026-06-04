@@ -41,3 +41,15 @@
 ---
 
 *Última actualización: 2026-05-04*
+
+---
+
+## 2026-06-04 — Sistema de Prompts Reutilizables (Feature #11)
+- **Agente:** big-pickle
+- **Cambios:**
+  - Creado `prompts/prompt-template.md` con template estándar de 6 secciones (orden de lectura, contexto, tarea técnica, restricciones, criterios de éxito, cierre de sesión)
+  - Feature #11 agregada a `feature_list.json` y marcada como `done`
+  - AGENTS.md actualizado — agregada entrada `prompts/` al mapa del repositorio
+  - `init.sh` actualizado — verifica existencia de `prompts/`
+  - `init.sh` → todo verde
+- **Resultado:** ✅ Metodología de prompts formalizada como componente del harness.

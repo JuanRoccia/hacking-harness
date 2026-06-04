@@ -93,6 +93,8 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 | `specs/`                     | Contratos funcionales de cada módulo                     | Antes de tocar cualquier módulo |
 | `audits/`                    | Auditorías de seguridad y calidad                         | Para revisar hallazgos previos |
 | `tests/`                     | Tests automáticos o manuales                              | Para verificar |
+| `qa/`                        | Tests E2E con navegador (Playwright)                     | Antes de marcar feature como `done` |
+| `prompts/`                   | Templates de prompts reutilizables (6-sección)            | Al planificar una nueva feature |
 | `user/`                      | Documentación para usuarios                               | Referencia externa |
 | `init.sh`                    | Script de verificación de entorno                         | Al iniciar sesión |
 
@@ -144,6 +146,7 @@ Antes de terminar:
 | **TESTER/DEBUGGER** | `agents/03-tester-debugger.md` | Testing, documentación, edge cases |
 | **FRONTEND/UI** | `agents/04-frontend-ui.md` | UI, UX, componentes |
 | **BACKEND** | `agents/05-backend.md` | APIs, lógica de negocio, BD |
+| **QA BROWSER** | `agents/07-qa-browser.md` | Testing E2E en navegador real |
 | **GHOST** | `agents/06-ghost.md` | Agente flexible para tareas variables |
 
 ---

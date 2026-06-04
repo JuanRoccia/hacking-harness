@@ -16,9 +16,10 @@
 | Área | Estado |
 |------|--------|
 | Estructura base | ✅ Funcional |
-| Agentes definidos | ✅ 6 roles |
+| Agentes definidos | ✅ 7 roles |
 | Tasks por agente | ✅ Definidas |
 | Documentación | ⚠️ En proceso |
+| QA Automation | ✅ Scripts + agente definidos |
 | Seguridad | ⚠️ Por validar |
 | Tests | ⚠️ Por implementar |
 
@@ -112,6 +113,20 @@ Proporcionar un **sistema de orquestación genérico** que permita a múltiples 
 
 ---
 
+### 7. QA BROWSER (big-pickle)
+**Ubicación**: `tasks/task-qa-browser.md`
+
+**Responsabilidad principal**: Testing E2E en navegador real para validar flujos de usuario.
+
+**Tareas específicas**:
+- Smoke test de landing y health endpoint
+- Registro y login completos
+- CRUD de entidad principal
+- Testing mobile (375px)
+- Regresión post-deploy
+
+---
+
 ## 🔄 Flujo de Trabajo Recomendado
 
 ```
@@ -129,7 +144,9 @@ Proporcionar un **sistema de orquestación genérico** que permita a múltiples 
 
 5. TESTER/DEBUGGER (kimi-k2.5-free)
    └─> Valida cambios y documenta
-```
+
+6. QA BROWSER (big-pickle)
+   └─> Testea en navegador real (E2E)
 
 ---
 
@@ -146,14 +163,16 @@ workflow-harness/
 │   ├── 03-tester-debugger.md
 │   ├── 04-frontend-ui.md
 │   ├── 05-backend.md
-│   └── 06-ghost.md
+│   ├── 06-ghost.md
+│   └── 07-qa-browser.md
 ├── tasks/                    # Tareas por agente
 │   ├── task-arquitecto.md
 │   ├── task-code-reviewer.md
 │   ├── task-tester.md
 │   ├── task-frontend.md
 │   ├── task-backend.md
-│   └── task-ghost.md
+│   ├── task-ghost.md
+│   └── task-qa-browser.md
 ├── skills/                   # Skills especializados
 │   └── [skills según necesidad]
 ├── docs/                     # Documentación del harness
@@ -164,6 +183,11 @@ workflow-harness/
 │   ├── current.md
 │   ├── history.md
 │   └── [informes de sesión]
+├── qa/                       # Tests E2E (Playwright)
+│   ├── qa-runner.mjs
+│   ├── qa-register.mjs
+│   ├── setup-qa-local.sh
+│   └── qa-reports/
 └── tests/                    # Tests automáticos
 ```
 

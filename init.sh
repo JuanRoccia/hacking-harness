@@ -30,7 +30,7 @@ echo ""
 echo "── 1. Verificando estructura del harness ──────────────"
 
 # Directorios base requeridos
-for dir in agents tasks skills tests audits user; do
+for dir in agents tasks skills tests qa prompts audits user; do
   if [ ! -d "$dir" ]; then
     fail "Falta directorio: $dir/"
     EXIT_CODE=1
@@ -65,7 +65,7 @@ done
 echo ""
 echo "── 4. Verificando agentes definidos ───────────────────"
 
-AGENTS=("01-arquitecto.md" "02-code-reviewer.md" "03-tester-debugger.md" "04-frontend-ui.md" "05-backend.md" "06-ghost.md")
+AGENTS=("01-arquitecto.md" "02-code-reviewer.md" "03-tester-debugger.md" "04-frontend-ui.md" "05-backend.md" "06-ghost.md" "07-qa-browser.md")
 for agent in "${AGENTS[@]}"; do
   if [ ! -f "agents/$agent" ]; then
     warn "Falta definición de agente: $agent"
@@ -77,7 +77,7 @@ done
 echo ""
 echo "── 5. Verificando tareas por agente ───────────────────"
 
-for task in "task-arquitecto.md" "task-code-reviewer.md" "task-tester.md" "task-frontend.md" "task-backend.md" "task-ghost.md"; do
+for task in "task-arquitecto.md" "task-code-reviewer.md" "task-tester.md" "task-frontend.md" "task-backend.md" "task-ghost.md" "task-qa-browser.md"; do
   if [ ! -f "tasks/$task" ]; then
     warn "Falta tarea: tasks/$task"
   else
@@ -86,7 +86,18 @@ for task in "task-arquitecto.md" "task-code-reviewer.md" "task-tester.md" "task-
 done
 
 echo ""
-echo "── 6. Verificando skills disponibles ──────────────────"
+echo "── 6. Verificando QA Automation ─────────────────────"
+
+for f in "qa/qa-runner.mjs" "qa/qa-register.mjs" "qa/setup-qa-local.sh" "qa/README.md"; do
+  if [ ! -f "$f" ]; then
+    warn "Falta archivo QA: $f"
+  else
+    ok "Existe $f"
+  fi
+done
+
+echo ""
+echo "── 7. Verificando skills disponibles ──────────────────"
 
 SKILL_COUNT=$(find skills/ -type f 2>/dev/null | wc -l)
 if [ "$SKILL_COUNT" -eq 0 ]; then
@@ -96,7 +107,7 @@ else
 fi
 
 echo ""
-echo "── 7. Ejecutando tests del harness ──────────────────"
+echo "── 8. Ejecutando tests del harness ──────────────────"
 
 # Skip tests if running in test mode to prevent infinite loops
 if [ "${WORKFLOW_TEST:-0}" -eq 1 ]; then
@@ -143,7 +154,7 @@ else
 fi
 
 echo ""
-echo "── 8. Generando configuración inicial ─────────────────"
+echo "── 9. Generando configuración inicial ─────────────────"
 
 # Verificar si estamos en modo interactivo
 if [ -t 0 ]; then
@@ -212,7 +223,7 @@ EOF
 fi
 
 echo ""
-echo "── 9. Verificando capa de specs ────────────────────"
+echo "── 10. Verificando capa de specs ────────────────────"
 
 if [ -d "specs" ]; then
   if [ -f "specs/_template.md" ]; then

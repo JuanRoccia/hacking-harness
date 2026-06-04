@@ -115,6 +115,65 @@
         "Documentación sobre cómo agregar tests"
       ],
       "status": "done"
+    },
+    {
+      "id": 8,
+      "name": "qa_structure",
+      "title": "Estructura de QA Automation (qa/)",
+      "description": "Crear directorio qa/ con scripts de Playwright, setup, y documentación para testing E2E en navegador real.",
+      "priority": "high",
+      "acceptance": [
+        "Existe directorio qa/",
+        "qa/qa-runner.mjs es un runner genérico configurable por CLI",
+        "qa/qa-register.mjs prueba el flujo de registro",
+        "qa/setup-qa-local.sh instala Playwright y prepara el entorno",
+        "qa/README.md documenta uso y configuración",
+        "init.sh verifica existencia de qa/ y sus scripts"
+      ],
+      "status": "done"
+    },
+    {
+      "id": 9,
+      "name": "qa_browser_agent",
+      "title": "Agente QA BROWSER (07-qa-browser.md)",
+      "description": "Definir el 7mo agente especializado en testing E2E con navegador real.",
+      "priority": "high",
+      "acceptance": [
+        "Existe agents/07-qa-browser.md con definición de rol",
+        "Existe tasks/task-qa-browser.md con tareas específicas",
+        "El agente lista flujos genéricos (smoke, register, CRUD, mobile, regression)",
+        "Define formato de reporte con health score",
+        "AGENTS.md referencia al agente QA BROWSER"
+      ],
+      "status": "done"
+    },
+    {
+      "id": 10,
+      "name": "qa_automation_skill",
+      "title": "Skill de QA Automation (skill-qa-automation.md)",
+      "description": "Crear skill de QA automation con patrones de Playwright, page object, y buenas prácticas.",
+      "priority": "medium",
+      "acceptance": [
+        "Existe skills/skill-qa-automation.md",
+        "Documenta patrones de testing (page object, console monitoring, screenshots)",
+        "Incluye mejores prácticas y referencias a scripts de qa/"
+      ],
+      "status": "done"
+    },
+    {
+      "id": 11,
+      "name": "prompt_system",
+      "title": "Sistema de Prompts Reutilizables",
+      "description": "Crear prompts/ con template estándar de 6 secciones para formalizar la metodología de prompts en el harness.",
+      "priority": "high",
+      "acceptance": [
+        "Existe directorio prompts/",
+        "prompts/prompt-template.md con template de 6 secciones",
+        "AGENTS.md referencia prompts/ en el mapa del repositorio",
+        "init.sh verifica existencia de prompts/",
+        "init.sh pasa sin errores"
+      ],
+      "status": "done"
     }
   ]
 }

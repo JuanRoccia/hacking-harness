@@ -10,6 +10,7 @@
    - `tasks/` — tareas específicas asignadas a cada agente.
    - `skills/` — capacidades especializadas reutilizables.
    - `progress/` — seguimiento de sesiones y bitácora.
+   - `qa/` — tests E2E con navegador real (Playwright).
    No introducir capas adicionales sin documentar la razón en `feature_list.json`.
 
 2. **Sin dependencias externas innecesarias.** Bash y Python stdlib son suficientes.

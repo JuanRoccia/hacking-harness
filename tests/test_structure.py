@@ -38,6 +38,11 @@ class TestHarnessStructure(unittest.TestCase):
         self.assertTrue(os.path.exists("tests"))
         self.assertTrue(os.path.isdir("tests"))
 
+    def test_qa_directory_exists(self) -> None:
+        """Directorio qa/ debe existir."""
+        self.assertTrue(os.path.exists("qa"))
+        self.assertTrue(os.path.isdir("qa"))
+
     def test_agents_md_exists(self) -> None:
         """AGENTS.md debe existir."""
         self.assertTrue(os.path.exists("AGENTS.md"))
@@ -76,27 +81,29 @@ class TestHarnessStructure(unittest.TestCase):
             self.assertTrue(os.path.exists(file), f"Falta: {file}")
 
     def test_agent_files_exist(self) -> None:
-        """agents/ debe tener los 6 archivos de agentes."""
+        """agents/ debe tener los 7 archivos de agentes."""
         expected_agents = [
             "agents/01-arquitecto.md",
             "agents/02-code-reviewer.md",
             "agents/03-tester-debugger.md",
             "agents/04-frontend-ui.md",
             "agents/05-backend.md",
-            "agents/06-ghost.md"
+            "agents/06-ghost.md",
+            "agents/07-qa-browser.md"
         ]
         for agent in expected_agents:
             self.assertTrue(os.path.exists(agent), f"Falta: {agent}")
 
     def test_task_files_exist(self) -> None:
-        """tasks/ debe tener los 6 archivos de tareas."""
+        """tasks/ debe tener los 7 archivos de tareas."""
         expected_tasks = [
             "tasks/task-arquitecto.md",
             "tasks/task-code-reviewer.md",
             "tasks/task-tester.md",
             "tasks/task-frontend.md",
             "tasks/task-backend.md",
-            "tasks/task-ghost.md"
+            "tasks/task-ghost.md",
+            "tasks/task-qa-browser.md"
         ]
         for task in expected_tasks:
             self.assertTrue(os.path.exists(task), f"Falta: {task}")
@@ -119,6 +126,17 @@ class TestSpecsStructure(unittest.TestCase):
             "specs/example/spec.md",
             "specs/example/changelog.md",
             "specs/example/decisions.md"
+        ]
+        for file in expected:
+            self.assertTrue(os.path.exists(file), f"Falta: {file}")
+
+    def test_qa_files_exist(self) -> None:
+        """qa/ debe tener runner, register, setup y README."""
+        expected = [
+            "qa/qa-runner.mjs",
+            "qa/qa-register.mjs",
+            "qa/setup-qa-local.sh",
+            "qa/README.md"
         ]
         for file in expected:
             self.assertTrue(os.path.exists(file), f"Falta: {file}")
