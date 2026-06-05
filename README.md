@@ -7,18 +7,20 @@
 ## 📋 Descripción
 
 **Workflow Harness** es un sistema de orquestación diseñado para:
-- Coordinar múltiples agentes de IA (6 roles especializados)
+- Coordinar múltiples agentes de IA (7 roles especializados)
 - Gestionar tareas de forma estructurada y trazable
 - Mantener calidad y consistencia en el desarrollo
 - Adaptarse a cualquier tipo de proyecto (e-commerce, SaaS, landing pages, etc.)
 
 ### Características Principales
 - ✅ **Projectless**: No está atado a ningún proyecto específico
-- ✅ **6 Agentes Especializados**: Arquitecto, Code Reviewer, Tester, Frontend, Backend, Ghost
+- ✅ **7 Agentes Especializados**: Arquitecto, Code Reviewer, Tester, Frontend, Backend, Ghost, QA Browser
 - ✅ **Estructura Clara**: Separación por responsabilidades
 - ✅ **Trazabilidad**: Seguimiento de sesiones y progreso
 - ✅ **Automatización**: Script de verificación `init.sh`
 - ✅ **Genérico**: Se adapta a cualquier stack tecnológico
+
+![Workflow Harness](assets/harness-workflow.png)
 
 ---
 
@@ -29,18 +31,22 @@ workflow-harness/
 ├── AGENTS.md                 # Punto de entrada (este archivo)
 ├── init.sh                   # Script de verificación de entorno
 ├── feature_list.json         # Lista estructurada de tareas
-├── 07-BUGS-REPORT.md       # Plantilla de reporte de bugs
-├── 08-LOOP.md              # Control de iteraciones
-├── TASK-PRINCIPAL.md       # Objetivo global del workflow
-├── TESTING-MANUAL.md       # Guía de testing manual
+├── 07-BUGS-REPORT.md         # Plantilla de reporte de bugs
+├── 08-LOOP.md                # Control de iteraciones
+├── TASK-PRINCIPAL.md         # Objetivo global del workflow
+├── TESTING-MANUAL.md         # Guía de testing manual
+├── .gitignore
+├── .workflow-config.json     # Configuración generada automáticamente
+├── LICENSE
 │
-├── agents/                   # Definiciones de roles (6 agentes)
+├── agents/                   # Definiciones de roles (7 agentes)
 │   ├── 01-arquitecto.md
 │   ├── 02-code-reviewer.md
 │   ├── 03-tester-debugger.md
 │   ├── 04-frontend-ui.md
 │   ├── 05-backend.md
-│   └── 06-ghost.md
+│   ├── 06-ghost.md
+│   └── 07-qa-browser.md
 │
 ├── tasks/                    # Tareas específicas por agente
 │   ├── task-arquitecto.md
@@ -48,43 +54,64 @@ workflow-harness/
 │   ├── task-tester.md
 │   ├── task-frontend.md
 │   ├── task-backend.md
-│   └── task-ghost.md
+│   ├── task-ghost.md
+│   └── task-qa-browser.md
 │
 ├── skills/                   # Habilidades especializadas
-│   ├── skill-pdf.md         # Procesamiento de PDFs
+│   ├── skill-pdf.md          # Procesamiento de PDFs
 │   ├── skill-ghost-masks.md  # Máscaras para agente Ghost
-│   ├── skill-performance.md # Optimización de rendimiento
-│   ├── skill-security.md    # Seguridad
-│   └── frontend-design/     # 10 sistemas de diseño (plantillas)
+│   ├── skill-performance.md  # Optimización de rendimiento
+│   ├── skill-security.md     # Seguridad
+│   ├── skill-ascii.txt       # Arte ASCII
+│   ├── skill-qa-automation.md # Automatización QA
+│   └── frontend-design/      # Sistemas de diseño (plantillas)
+│
+├── specs/                    # Contratos funcionales
+│   ├── _README.md
+│   ├── _template.md
+│   └── example/
 │
 ├── docs/                     # Documentación del harness
-│   ├── architecture.md      # Estándar de calidad
-│   ├── conventions.md      # Convenciones de código
-│   └── verification.md     # Criterios de verificación
+│   ├── architecture.md       # Estándar de calidad
+│   ├── conventions.md        # Convenciones de código
+│   └── verification.md       # Criterios de verificación
 │
 ├── progress/                 # Seguimiento de sesiones
-│   ├── current.md          # Sesión actual (plantilla)
-│   ├── history.md          # Bitácora histórica (append-only)
-│   ├── explore_template.md  # Plantilla exploración
-│   ├── impl_template.md    # Plantilla implementación
-│   └── review_template.md  # Plantilla revisión
+│   ├── current.md            # Sesión actual (plantilla)
+│   ├── history.md            # Bitácora histórica (append-only)
+│   ├── explore_template.md   # Plantilla exploración
+│   ├── impl_template.md      # Plantilla implementación
+│   └── review_template.md    # Plantilla revisión
+│
+├── prompts/                  # Templates de prompts
+│   └── prompt-template.md
 │
 ├── tests/                    # Tests automáticos del harness
-│   ├── test_feature_list.py # Valida feature_list.json
-│   ├── test_structure.py    # Valida estructura del harness
-│   └── test_init.sh        # Valida init.sh
+│   ├── test_feature_list.py  # Valida feature_list.json
+│   ├── test_structure.py     # Valida estructura del harness
+│   └── test_init.sh          # Valida init.sh
 │
 ├── audits/                   # Auditorías de seguridad
-│   ├── audit.md           # Plantilla auditoría general
-│   └── auditoria.md       # Plantilla auditoría seguridad
+│   ├── audit.md              # Plantilla auditoría general
+│   └── auditoria.md          # Plantilla auditoría seguridad
 │
-└── user/                     # Documentación para usuarios
-    └── TUTORIAL.md         # Tutorial de uso del harness
+├── qa/                       # Tests E2E con navegador (Playwright)
+│   ├── README.md
+│   ├── qa-runner.mjs
+│   ├── qa-register.mjs
+│   ├── setup-qa-local.sh
+│   └── qa-reports/
+│
+├── user/                     # Documentación para usuarios
+│   └── TUTORIAL.md
+│
+└── assets/                   # Recursos gráficos
+    └── harness-workflow.png
 ```
 
 ---
 
-## 🤖️ Los 6 Agentes
+## 🤖️ Los 7 Agentes
 
 | Rol | Archivo | Responsabilidad Principal | LLM Sugerido |
 |-----|---------|-------------------------|---------------|
@@ -94,6 +121,7 @@ workflow-harness/
 | **FRONTEND/UI** | `agents/04-frontend-ui.md` | UI/UX, componentes, diseño | minimax-m2.1-free |
 | **BACKEND** | `agents/05-backend.md` | APIs, lógica, base de datos | big-pickle |
 | **GHOST** | `agents/06-ghost.md` | Agente flexible (6 modos) | big-pickle |
+| **QA BROWSER** | `agents/07-qa-browser.md` | Testing E2E en navegador real | big-pickle |
 
 ### Agente GHOST - Modos Disponibles
 - 🕵️ **EXPLORADOR**: Mapear estructura
@@ -196,8 +224,8 @@ Genera: `.workflow-config.json` con la configuración.
 | Componente | Estado |
 |------------|--------|
 | Estructura base | ✅ 100% genérico |
-| Agentes definidos | ✅ 6/6 genéricos |
-| Tareas asignadas | ✅ 6/6 genéricas |
+| Agentes definidos | ✅ 7/7 genéricos |
+| Tareas asignadas | ✅ 7/7 genéricas |
 | Documentación | ✅ 3/3 archivos |
 | Tests del harness | ✅ 3/3 tests |
 | Auditorías | ✅ 2/2 plantillas genéricas |
