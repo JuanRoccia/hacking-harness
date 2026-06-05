@@ -20,7 +20,7 @@
 - ✅ **Automatización**: Script de verificación `init.sh`
 - ✅ **Genérico**: Se adapta a cualquier stack tecnológico
 
-![Workflow Harness](assets/harness-workflow.png)
+![Workflow Harness](assets/Furious-D.png)
 
 ---
 
