@@ -13,29 +13,29 @@
 
 ## Nombres de archivos
 
-| Tipo                    | Convención        | Ejemplo               |
-|-------------------------|-------------------|-----------------------|
-| Agentes                 | `NN-nombre.md`   | `01-arquitecto.md`    |
-| Tareas                  | `task-nombre.md`  | `task-arquitecto.md`  |
-| Skills                  | `skill-nombre.md` | `skill-design.md`     |
-| Documentos workflow     | `UPPER-KEBAB.md` | `AGENTS.md`           |
-| Configuración           | `.lowercase`      | `.workflow-config.json`|
-| JSON estructurado       | `lowercase.json`  | `feature_list.json`   |
+| Tipo                    | Convención          | Ejemplo                     |
+|-------------------------|---------------------|-----------------------------|
+| Agentes                 | `NN-rol.md`        | `01-recon-agent.md`         |
+| Tareas                  | `task-rol.md`      | `task-recon.md`             |
+| Skills                  | `skill-nombre.md`  | `skill-recon-osint.md`      |
+| Documentos workflow     | `UPPER-KEBAB.md`   | `AGENTS.md`                 |
+| Configuración           | `.lowercase`       | `.workflow-config.json`     |
+| JSON estructurado       | `lowercase.json`   | `feature_list.json`         |
 
 ## Estructura de archivos Markdown
 
 Todo archivo MD en `agents/` y `tasks/` empieza con:
 
 ```markdown
-# [TÍTULO DEL ROL/TAREA]
+# [TÍTULO DEL ROL/TAREA DE HACKING]
 
 ## Contexto
 
-[Descripción breve]
+[Descripción breve de la fase de hacking]
 
 ## Responsabilidades
 
-- [lista de responsabilidades]
+- [lista de responsabilidades específicas]
 ```
 
 ## JSON
@@ -43,21 +43,6 @@ Todo archivo MD en `agents/` y `tasks/` empieza con:
 - **Formato:** JSON estándar con 2 espacios de indentación.
 - **Strings:** comillas dobles `"..."` siempre.
 - **Keys:** camelCase para datos dinámicos, snake_case para metadatos.
-- **Arrays:** uno por línea con coma final (trailing comma no permitida en JSON).
-
-Ejemplo `feature_list.json`:
-```json
-{
-  "project": "workflow-harness",
-  "features": [
-    {
-      "id": 1,
-      "name": "init_script",
-      "status": "done"
-    }
-  ]
-}
-```
 
 ## Bash Scripting (init.sh)
 
@@ -98,6 +83,6 @@ cuando explican un *por qué* no obvio. Los nombres deben hacer el resto.
 
 ## Git
 
-- **Commits:** mensajes descriptivos en imperativo ("Crea init.sh", no "Creado init.sh").
-- **.gitignore:** excluir `progress/`, archivos temporales, y secretos.
+- **Commits:** mensajes descriptivos en imperativo ("Crea agente recon", no "Creado agente recon").
+- **.gitignore:** excluir `progress/`, archivos de hallazgos, y secretos.
 - **Ramas:** no crear ramas para el harness, trabajar en main o usar PRs.

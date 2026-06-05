@@ -1,13 +1,14 @@
-# TESTING-MANUAL.md — Guía de Testing Manual
+# TESTING-MANUAL.md — Guía de Pentesting Manual
 
-> Este documento proporciona una guía genérica para realizar testing manual
-> de cualquier proyecto gestionado con este workflow.
+> Este documento proporciona una guía genérica para realizar pentesting manual
+> siguiendo las 5 fases del hacking ético estructurado.
 
 ---
 
 ## Objetivo
 
-Documentar el proceso de testing manual para validar funcionalidades críticas antes de marcar una feature como `done`.
+Documentar el proceso de pentesting manual para validar la seguridad de un
+objetivo antes de marcar una fase como `done`.
 
 ---
 
@@ -20,148 +21,103 @@ Documentar el proceso de testing manual para validar funcionalidades críticas a
 Debe terminar sin errores.
 
 ### 2. Leer Documentación
-- `AGENTS.md` - Entender el workflow
-- `tasks/task-[rol].md` - Tareas asignadas
-- `docs/verification.md` - Criterios de verificación
+- `AGENTS.md` - Entender el workflow de hacking
+- `tasks/task-[rol].md` - Tareas asignadas por fase
+- `docs/methodology.md` - Metodología de pentesting
 
-### 3. Preparar Datos de Prueba
-- Identificar qué datos se necesitan
-- Crear datos de prueba en archivo separado si es necesario
-- No usar datos reales de producción
+### 3. Preparar Herramientas
+- Asegurar que las herramientas necesarias estén instaladas
+- Configurar IP atacante y puertos de escucha
+- Preparar wordlists y payloads
 
 ---
 
-## Flujo de Testing Manual
+## Flujo de Pentesting Manual
 
-### Paso 1: Identificar Funcionalidades Críticas
-Según la feature en desarrollo, identifica:
-- Flujos principales (happy path)
-- Flujos alternativos
-- Casos de error esperados
-- Edge cases
+### Fase 1: Reconocimiento
+- [ ] Google Dorking completado
+- [ ] WHOIS y DNS records obtenidos
+- [ ] Subdominios enumerados
+- [ ] Tecnologías identificadas
+- [ ] OSINT en redes sociales
 
-### Paso 2: Crear Matriz de Testing
+### Fase 2: Escaneo y Enumeración
+- [ ] Nmap scan completo (TCP/UDP)
+- [ ] Enumeración web (directorios ocultos)
+- [ ] Nikto / vulnerabilidad web scan
+- [ ] Headers de seguridad verificados
+- [ ] Búsqueda de CVEs
 
-| ID | Funcionalidad | Pasos | Datos | Esperado | Actual | Estado |
-|----|----------------|-------|------|----------|--------|--------|
-| TC01 | [Nombre] | 1,2,3 | [Datos] | [Resultado] | [Actual] | ✅/❌ |
+### Fase 3: Explotación
+- [ ] SQL Injection probada
+- [ ] XSS probado (reflejado/almacenado/DOM)
+- [ ] RCE probado
+- [ ] LFI/RFI probado
+- [ ] Metasploit ejecutado
+- [ ] Brute force probado
 
-### Paso 3: Ejecutar Casos de Prueba
+### Fase 4: Persistencia
+- [ ] Webshell instalada
+- [ ] Cron job / scheduled task creado
+- [ ] Escalada de privilegios
+- [ ] Movimiento lateral
 
-#### Ejemplo: Login
-```
-TC01 - Login con credenciales válidas
-1. Ir a /login
-2. Ingresar email: test@example.com
-3. Ingresar password: Test123!
-4. Hacer click en "Iniciar Sesión"
-→ Esperado: Redirección a /dashboard
-→ Actual: [Completar]
-→ Estado: [✅/❌]
-```
+### Fase 5: Limpieza
+- [ ] Logs limpiados
+- [ ] Artefactos removidos
+- [ ] Timestamps restaurados
+- [ ] Informe generado
 
-### Paso 4: Documentar Resultados
+---
 
-#### Formato de Reporte
+## Matriz de Hallazgos
+
+| ID | Vulnerabilidad | Fase | Severidad | PoC | Estado |
+|----|----------------|------|-----------|-----|--------|
+| VULN-001 | [Nombre] | Recon/Scan/Exploit/Persist | Critica/Alta/Media/Baja | [link] | Pending/Fixed |
+
+---
+
+## Formato de Reporte de Hallazgo
+
 ```markdown
-## Reporte de Testing Manual - [Feature Nombre]
+## VULN-001 - [Título]
 
-**Fecha**: [YYYY-MM-DD]
-**Agente**: [Rol]
-**Feature**: [id en feature_list.json]
-**Entorno**: [Dev/Staging/Prod]
-
-### Resumen
-- Total casos: X
-- Exitosos: Y
-- Fallidos: Z
-- Bloqueantes: W
-
-### Casos Fallidos
-[Detallar cada caso fallido con screenshots/logs]
-
-### Bugs Encontrados
-[Referencia a BUGS-REPORT.md]
-
-### Recomendaciones
-[Mejoras sugeridas]
+**Severidad**: 🔴 Crítica
+**Fase**: Exploit
+**URL**: https://target.com/api/endpoint
+**PoC**: [Comando o payload]
+**Evidencia**: [Screenshot o log]
+**Remediación**: [Qué hacer para arreglarlo]
 ```
-
----
-
-## Áreas Críticas a Testear (Genérico)
-
-### 1. Autenticación y Autorización
-- [ ] Registro de usuario nuevo
-- [ ] Login con credenciales válidas
-- [ ] Login con credenciales inválidas
-- [ ] Recuperación de contraseña
-- [ ] Logout
-- [ ] Refresh token
-- [ ] Permisos por rol
-
-### 2. CRUD Principal
-- [ ] Crear entidad (todos los campos)
-- [ ] Crear entidad (campos mínimos)
-- [ ] Crear con datos inválidos (validación)
-- [ ] Editar entidad
-- [ ] Eliminar entidad (con confirmación)
-- [ ] Listar entidades (paginación/filtros)
-
-### 3. Integraciones Externas (si aplica)
-- [ ] Webhook handlers
-- [ ] APIs externas
-- [ ] Pasarelas de pago
-- [ ] Manejo de timeouts
-
-### 4. UI/UX
-- [ ] Responsive design (mobile, tablet, desktop)
-- [ ] Accesibilidad (keyboard nav, ARIA labels)
-- [ ] Loading states
-- [ ] Error states
-- [ ] Empty states
-- [ ] Formularios (validación en tiempo real)
-
-### 5. Seguridad
-- [ ] SQL/NoSQL injection
-- [ ] XSS
-- [ ] CSRF
-- [ ] Rate limiting
-- [ ] Headers de seguridad
 
 ---
 
 ## Checklist de Cierre
 
-Antes de marcar una feature como `done`:
+Antes de marcar una fase como `done`:
 
-- [ ] Todos los casos de prueba pasaron
-- [ ] Bugs críticos han sido corregidos
+- [ ] Todos los hallazgos documentados con PoC
+- [ ] Vulnerabilidades críticas reportadas
 - [ ] Se actualizó `progress/current.md`
 - [ ] Se ejecutó `./init.sh` sin errores
-- [ ] La feature está documentada
-- [ ] No hay comentarios `TODO` sin contexto
-
----
-
-## Tips para Testing Manual
-
-1. **Usa datos realistas** pero no reales
-2. **Documenta todo** con screenshots/logs
-3. **Prueba casos edge** (valores límite, caracteres especiales)
-4. **Verifica en diferentes navegadores** (si es web)
-5. **Prueba conectividad intermitente** (si aplica)
-6. **Usa herramientas de desarrollo** (DevTools, Postman, etc.)
+- [ ] No hay artefactos temporales en el sistema objetivo
+- [ ] Informe técnico generado
 
 ---
 
 ## Herramientas Recomendadas
 
-- **Browser DevTools** - Para debugging frontend
-- **Postman/Insomnia** - Para testing de APIs
-- **SQLite Browser** - Para inspeccionar base de datos local
-- **curl/httpie** - Para requests rápidos desde terminal
+- **nmap** - Escaneo de puertos
+- **Burp Suite / ZAP** - Proxy de interceptación
+- **sqlmap** - SQL Injection automation
+- **Metasploit** - Exploitation framework
+- **gobuster/dirsearch** - Enumeración web
+- **nikto** - Web vulnerability scanner
+- **hydra** - Brute force
+- **john/hashcat** - Password cracking
+- **curl** - Peticiones HTTP desde terminal
 
 ---
 
-*Guía genérica adaptada para workflow-harness*
+*Guía de pentesting manual adaptada para hacking-harness*

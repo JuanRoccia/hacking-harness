@@ -1,7 +1,7 @@
-# Verificación — Cómo demostrar que el trabajo funciona
+# Verificación — Cómo demostrar que el hallazgo es válido
 
-> Regla de oro: **el agente no dice "funciona", lo demuestra**.
-> Todo cambio termina con evidencia ejecutable, no con afirmaciones.
+> Regla de oro: **el agente no dice "es vulnerable", lo demuestra**.
+> Todo hallazgo termina con evidencia ejecutable, no con afirmaciones.
 
 ## Niveles de verificación
 
@@ -15,7 +15,7 @@ bash init.sh
 
 Debe terminar con:
 ```
-[OK]    Entorno listo. Puedes empezar a trabajar.
+[OK]    Harness verificado correctamente.
 ```
 
 ### Nivel 2 — Validación de archivos JSON (obligatorio para config)
@@ -32,60 +32,44 @@ python3 -c "import json; json.load(open('feature_list.json'))"
 - Máximo 1 feature en estado `in_progress`.
 - Estados válidos: `pending`, `in_progress`, `done`, `blocked`.
 
-### Nivel 3 — Verificación de links en Markdown (recomendado)
+### Nivel 3 — Validación de hallazgos de seguridad (crítico)
 
-Los archivos `.md` no deben tener links rotos a archivos locales:
+Cada hallazgo reportado debe tener:
+
+- [ ] Descripción clara de la vulnerabilidad
+- [ ] Pasos para reproducir (reproducibles por otro agente)
+- [ ] Prueba de concepto (PoC) funcional
+- [ ] Clasificación CVSS (Critical/High/Medium/Low)
+- [ ] Evidencia (screenshot, log, video, request/response)
+- [ ] Recomendación de remediación
+
+### Nivel 4 — Verificación de herramientas de hacking
+
+El harness puede verificar herramientas disponibles:
 
 ```bash
-grep -r "\[.*\](.*\.md)" . --include="*.md" | while read line; do
-  # extraer archivo referenciado y verificar existencia
-done
-```
+# Verificar nmap
+nmap --version
 
-### Nivel 4 — Test de integración del workflow (opcional pero recomendado)
+# Verificar curl
+curl --version
 
-Simular un ciclo completo de workflow:
-
-```bash
-# 1. Verificar entorno
-./init.sh
-
-# 2. Leer AGENTS.md
-cat AGENTS.md | head -20
-
-# 3. Cambiar estado de feature en feature_list.json
-# (simular inicio de tarea)
-python3 -c "
-import json
-data = json.load(open('feature_list.json'))
-data['features'][0]['status'] = 'in_progress'
-json.dump(data, open('feature_list.json', 'w'), indent=2)
-"
-
-# 4. Verificar que init.sh detecta in_progress
-./init.sh
-
-# 5. Revertir cambios
-python3 -c "
-import json
-data = json.load(open('feature_list.json'))
-data['features'][0]['status'] = 'done'
-json.dump(data, open('feature_list.json', 'w'), indent=2)
-"
+# Verificar python3
+python3 --version
 ```
 
 ## Anti-patrones (no hacer)
 
-- ❌ "He creado el archivo, debería funcionar." → falta validación ejecutable.
-- ❌ JSON que solo se verifica visualmente. → debe validarse con parser.
-- ❌ `mock` del filesystem en tests. → usa `tempfile.TemporaryDirectory()` real.
+- ❌ "El puerto 80 está abierto, debería ser explotable." → demostrar con PoC.
+- ❌ "Ejecuté un exploit y funcionó." → mostrar evidencia (screenshot, output).
+- ❌ Reportar vulnerabilidad sin pasos de reproducción.
 - ❌ Marcar feature como `done` sin pasar `./init.sh`.
 - ❌ Editar `progress/history.md` entradas anteriores. → solo append al final.
 
 ## Verificación final antes de cerrar sesión
 
 ```bash
-./init.sh           # debe terminar con [OK] Entorno listo
+./init.sh           # debe terminar con [OK]
 ```
 
 Si `./init.sh` está rojo, **no** marques nada como `done`. Anota el bloqueo
@@ -95,7 +79,8 @@ en `progress/current.md` con estado `blocked` en `feature_list.json`.
 
 - [ ] `./init.sh` pasa verde.
 - [ ] Feature completada marcada como `done` en `feature_list.json`.
+- [ ] Hallazgos documentados con PoC y evidencia.
 - [ ] Resumen de sesión añadido al final de `progress/history.md`.
 - [ ] `progress/current.md` vaciado (dejar solo plantilla).
-- [ ] No quedan archivos temporales (`*.tmp`, `__pycache__`, etc.).
+- [ ] No quedan archivos temporales, payloads, ni credenciales.
 - [ ] No hay TODOs sin contexto en el código/documentos.

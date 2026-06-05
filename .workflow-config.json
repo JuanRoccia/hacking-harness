@@ -1,7 +1,14 @@
 {
-  "project_name": "Workflow Harness",
+  "project_name": "Hacking Harness",
   "project_type": "generic",
   "github_repo": false,
-  "initialized_at": "2026-06-04T17:12:21Z",
-  "harness_version": "1.0.0"
+  "initialized_at": "2026-06-05T23:15:24Z",
+  "harness_version": "2.0.0",
+  "phases": {
+    "1_recon": "pending",
+    "2_scan": "pending",
+    "3_exploit": "pending",
+    "4_persist": "pending",
+    "5_cleanup": "pending"
+  }
 }

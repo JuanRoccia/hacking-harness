@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# init.sh — Verificación e inicialización del workflow harness
+# init.sh — Verificación e inicialización del Hacking Harness
 #
-# Este script verifica la integridad del harness y recopila información
-# del proyecto antes de iniciar el workflow.
+# Este script verifica la integridad del harness de hacking y recopila
+# información del objetivo antes de iniciar el workflow.
 #
 # Uso: bash init.sh
 
@@ -23,13 +23,12 @@ PY_TESTS=0
 BASH_TESTS=0
 
 echo "═══════════════════════════════════════════════════════════"
-echo "  WORKFLOW HARNESS - Inicialización del Entorno"
+echo "  HACKING HARNESS - Inicialización del Entorno"
 echo "═══════════════════════════════════════════════════════════"
 echo ""
 
 echo "── 1. Verificando estructura del harness ──────────────"
 
-# Directorios base requeridos
 for dir in agents tasks skills tests qa prompts audits user; do
   if [ ! -d "$dir" ]; then
     fail "Falta directorio: $dir/"
@@ -42,7 +41,6 @@ done
 echo ""
 echo "── 2. Verificando archivos base del workflow ──────────"
 
-# Archivos core del workflow
 for f in "AGENTS.md" "feature_list.json" "07-BUGS-REPORT.md" "TESTING-MANUAL.md"; do
   if [ ! -f "$f" ]; then
     warn "Falta archivo base: $f"
@@ -54,7 +52,7 @@ done
 echo ""
 echo "── 3. Verificando documentación (docs/) ──────────────"
 
-for f in "docs/architecture.md" "docs/conventions.md" "docs/verification.md"; do
+for f in "docs/methodology.md" "docs/conventions.md" "docs/verification.md"; do
   if [ ! -f "$f" ]; then
     warn "Falta documento: $f"
   else
@@ -65,7 +63,7 @@ done
 echo ""
 echo "── 4. Verificando agentes definidos ───────────────────"
 
-AGENTS=("01-arquitecto.md" "02-code-reviewer.md" "03-tester-debugger.md" "04-frontend-ui.md" "05-backend.md" "06-ghost.md" "07-qa-browser.md")
+AGENTS=("01-recon-agent.md" "02-scan-agent.md" "03-exploit-agent.md" "04-persist-agent.md" "05-cleanup-agent.md" "06-ghost.md" "07-qa-browser.md")
 for agent in "${AGENTS[@]}"; do
   if [ ! -f "agents/$agent" ]; then
     warn "Falta definición de agente: $agent"
@@ -77,7 +75,7 @@ done
 echo ""
 echo "── 5. Verificando tareas por agente ───────────────────"
 
-for task in "task-arquitecto.md" "task-code-reviewer.md" "task-tester.md" "task-frontend.md" "task-backend.md" "task-ghost.md" "task-qa-browser.md"; do
+for task in "task-recon.md" "task-scan.md" "task-exploit.md" "task-persist.md" "task-cleanup.md" "task-ghost.md" "task-qa-browser.md"; do
   if [ ! -f "tasks/$task" ]; then
     warn "Falta tarea: tasks/$task"
   else
@@ -86,9 +84,29 @@ for task in "task-arquitecto.md" "task-code-reviewer.md" "task-tester.md" "task-
 done
 
 echo ""
-echo "── 6. Verificando QA Automation ─────────────────────"
+echo "── 6. Verificando herramientas de hacking ───────────"
 
-for f in "qa/qa-runner.mjs" "qa/qa-register.mjs" "qa/setup-qa-local.sh" "qa/README.md"; do
+HACKING_TOOLS=("nmap" "curl" "python3")
+for tool in "${HACKING_TOOLS[@]}"; do
+  if command -v "$tool" >/dev/null 2>&1; then
+    ok "Herramienta disponible: $tool"
+  else
+    warn "Herramienta no encontrada: $tool (instalación recomendada)"
+  fi
+done
+
+# Herramientas opcionales (no críticas)
+OPTIONAL_TOOLS=("gobuster" "sqlmap" "msfconsole" "nikto" "whatweb" "dirsearch" "hydra" "john")
+for tool in "${OPTIONAL_TOOLS[@]}"; do
+  if command -v "$tool" >/dev/null 2>&1; then
+    ok "Herramienta opcional disponible: $tool"
+  fi
+done
+
+echo ""
+echo "── 7. Verificando QA Automation ─────────────────────"
+
+for f in "qa/qa-runner.mjs" "qa/qa-security.mjs" "qa/setup-qa-local.sh" "qa/README.md"; do
   if [ ! -f "$f" ]; then
     warn "Falta archivo QA: $f"
   else
@@ -97,7 +115,7 @@ for f in "qa/qa-runner.mjs" "qa/qa-register.mjs" "qa/setup-qa-local.sh" "qa/READ
 done
 
 echo ""
-echo "── 7. Verificando skills disponibles ──────────────────"
+echo "── 8. Verificando skills disponibles ──────────────────"
 
 SKILL_COUNT=$(find skills/ -type f 2>/dev/null | wc -l)
 if [ "$SKILL_COUNT" -eq 0 ]; then
@@ -107,14 +125,12 @@ else
 fi
 
 echo ""
-echo "── 8. Ejecutando tests del harness ──────────────────"
+echo "── 9. Ejecutando tests del harness ──────────────────"
 
-# Skip tests if running in test mode to prevent infinite loops
 if [ "${WORKFLOW_TEST:-0}" -eq 1 ]; then
   info "Modo test detectado, omitiendo ejecución de tests"
 else
   if [ -d "tests" ]; then
-    # Tests de Python (verificar que python3 sea ejecutable real)
     if python3 -c "import sys; sys.exit(0)" >/dev/null 2>&1; then
       PY_TESTS=$(find tests/ -name "test_*.py" 2>/dev/null | wc -l)
       if [ "$PY_TESTS" -gt 0 ]; then
@@ -128,8 +144,7 @@ else
     else
       warn "Python no disponible, omitiendo tests de Python"
     fi
-    
-    # Tests de Bash
+
     BASH_TESTS=$(find tests/ -name "test_*.sh" 2>/dev/null | wc -l)
     if [ "$BASH_TESTS" -gt 0 ]; then
       echo "Encontrados $BASH_TESTS tests de Bash"
@@ -144,7 +159,7 @@ else
         fi
       done
     fi
-    
+
     if [ "$PY_TESTS" -eq 0 ] && [ "$BASH_TESTS" -eq 0 ]; then
       warn "No hay tests en tests/"
     fi
@@ -154,51 +169,52 @@ else
 fi
 
 echo ""
-echo "── 9. Generando configuración inicial ─────────────────"
+echo "── 10. Generando configuración inicial ─────────────────"
 
-# Verificar si estamos en modo interactivo
 if [ -t 0 ]; then
-  # Preguntar al usuario sobre el proyecto
-  info "Para configurar el workflow, necesito información sobre el proyecto:"
+  info "Para configurar el workflow, necesito información sobre el objetivo:"
   echo ""
-  
-  read -p "¿Cuál es el nombre del proyecto? (ej: MiApp): " PROJECT_NAME
-  read -p "¿Qué tipo de proyecto es? (ej: e-commerce, saas, landing): " PROJECT_TYPE
+
+  read -p "¿Cuál es el nombre del proyecto/objetivo? (ej: Auditoria-EmpresaX): " PROJECT_NAME
+  read -p "¿Qué tipo de objetivo es? (web, red, api, mobile, red-interna): " PROJECT_TYPE
   read -p "¿Se subirá a GitHub? (y/n): " GITHUB_CHOICE
-  
+
   if [[ "$GITHUB_CHOICE" =~ ^[Yy]$ ]]; then
-    info "Se configurará .gitignore para excluir /workflow y archivos sensibles"
+    info "Se configurará .gitignore para excluir hallazgos sensibles"
     GITHUB_REPO=true
   else
     GITHUB_REPO=false
   fi
 else
-  # Modo no interactivo - usar valores por defecto
-  PROJECT_NAME="Workflow Harness"
+  PROJECT_NAME="Hacking Harness"
   PROJECT_TYPE="generic"
   GITHUB_REPO=false
   info "Modo no interactivo - usando valores por defecto"
 fi
 
-# Crear archivo de configuración del proyecto
 cat > .workflow-config.json <<EOF
 {
   "project_name": "$PROJECT_NAME",
   "project_type": "$PROJECT_TYPE",
   "github_repo": $GITHUB_REPO,
   "initialized_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
-  "harness_version": "1.0.0"
+  "harness_version": "2.0.0",
+  "phases": {
+    "1_recon": "pending",
+    "2_scan": "pending",
+    "3_exploit": "pending",
+    "4_persist": "pending",
+    "5_cleanup": "pending"
+  }
 }
 EOF
 
 ok "Configuración guardada en .workflow-config.json"
 
-# Crear .gitignore si se requiere
 if [ "$GITHUB_REPO" = true ]; then
   if [ ! -f ".gitignore" ]; then
     cat > .gitignore <<EOF
-# Workflow harness - archivos internos
-/workflow
+# Hacking harness - archivos internos
 /agents
 /tasks
 /skills
@@ -206,6 +222,12 @@ audits/
 user/
 *.md
 !README.md
+
+# Datos sensibles de auditorías
+reports/
+findings/
+loot/
+ screenshots/
 
 # Dependencias
 node_modules/
@@ -223,7 +245,7 @@ EOF
 fi
 
 echo ""
-echo "── 10. Verificando capa de specs ────────────────────"
+echo "── 11. Verificando capa de specs ────────────────────"
 
 if [ -d "specs" ]; then
   if [ -f "specs/_template.md" ]; then
@@ -269,8 +291,9 @@ echo "════════════════════════�
 echo ""
 
 if [ $EXIT_CODE -eq 0 ]; then
-  ok "Harness verificado correctamente. Puedes comenzar a trabajar."
-  info "Proyecto: $PROJECT_NAME ($PROJECT_TYPE)"
+  ok "Harness verificado correctamente. Puedes comenzar el pentesting."
+  info "Objetivo: $PROJECT_NAME ($PROJECT_TYPE)"
+  info "Fases disponibles: 5 (Recon → Scan → Exploit → Persist → Cleanup)"
   info "Configuración: .workflow-config.json"
 else
   fail "Harness tiene problemas. Revisa los errores arriba."

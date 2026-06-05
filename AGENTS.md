@@ -1,4 +1,4 @@
-# AGENTS.md — Mapa de navegación para agentes de IA
+# AGENTS.md — Mapa de navegación para agentes de IA (Hacking Harness)
 
 > Este archivo es el **punto de entrada** para cualquier agente que trabaje en este
 > repositorio. NO es una biblia de reglas: es un **mapa**. Lee solo lo que
@@ -84,19 +84,19 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 | `TODO.md`                    | Lista de tareas con estado (pending / in_progress / done)  | Siempre, al empezar |
 | `progress/current.md`        | Estado de la sesión actual                                | Siempre, al empezar |
 | `progress/history.md`        | Bitácora append-only de sesiones anteriores               | Si necesitas contexto histórico |
-| `agents/`                    | Definiciones de roles de agentes (arquitecto, backend, etc) | Al asumir un rol específico |
+| `agents/`                    | Definiciones de roles de agentes (recon, scan, exploit, etc) | Al asumir un rol específico |
 | `tasks/`                     | Tareas específicas por agente                             | Al ejecutar tarea de un rol |
-| `skills/`                    | Skills especializados (PDF, GSAP, diseño, etc.)          | Según necesidad técnica |
-| `TASK-PRINCIPAL.md`          | Objetivo global del workflow                              | Para entender el propósito general |
-| `TESTING-MANUAL.md`          | Guía de testing manual                                    | Antes de validar cambios |
-| `BUGS-REPORT.md`             | Plantilla para reportar bugs                              | Al encontrar un error |
-| `specs/`                     | Contratos funcionales de cada módulo                     | Antes de tocar cualquier módulo |
-| `audits/`                    | Auditorías de seguridad y calidad                         | Para revisar hallazgos previos |
-| `tests/`                     | Tests automáticos o manuales                              | Para verificar |
-| `qa/`                        | Tests E2E con navegador (Playwright)                     | Antes de marcar feature como `done` |
-| `prompts/`                   | Templates de prompts reutilizables (6-sección)            | Al planificar una nueva feature |
-| `user/`                      | Documentación para usuarios                               | Referencia externa |
-| `init.sh`                    | Script de verificación de entorno                         | Al iniciar sesión |
+| `skills/`                    | Skills especializados (OSINT, scanning, explotación, etc.)| Según necesidad técnica |
+| `TASK-PRINCIPAL.md`          | Objetivo global del workflow de hacking                   | Para entender el propósito general |
+| `TESTING-MANUAL.md`          | Guía de pentesting manual                                 | Antes de validar cambios |
+| `BUGS-REPORT.md`             | Plantilla para reportar vulnerabilidades                  | Al encontrar un hallazgo |
+| `specs/`                     | Contratos funcionales de cada módulo de hacking           | Antes de tocar cualquier módulo |
+| `audits/`                    | Auditorías de seguridad y hallazgos                       | Para revisar resultados previos |
+| `tests/`                     | Tests automáticos del harness                             | Para verificar integridad |
+| `qa/`                        | Scripts de validación de seguridad (Playwright)           | Antes de marcar tarea como `done` |
+| `prompts/`                   | Templates de prompts reutilizables (6-sección)            | Al planificar una nueva fase |
+| `user/`                      | Documentación para usuarios del harness                   | Referencia externa |
+| `init.sh`                    | Script de verificación de entorno de hacking              | Al iniciar sesión |
 
 ## 3. Reglas duras (no negociables)
 
@@ -139,16 +139,16 @@ Antes de terminar:
 
 ## 7. Roles disponibles
 
-| Rol | Archivo | Responsabilidad |
-|-----|---------|-----------------|
-| **ARQUITECTO** | `agents/01-arquitecto.md` | Diseño de datos, APIs, arquitectura |
-| **CODE REVIEWER** | `agents/02-code-reviewer.md` | Calidad de código, bugs, anti-patterns |
-| **TESTER/DEBUGGER** | `agents/03-tester-debugger.md` | Testing, documentación, edge cases |
-| **FRONTEND/UI** | `agents/04-frontend-ui.md` | UI, UX, componentes |
-| **BACKEND** | `agents/05-backend.md` | APIs, lógica de negocio, BD |
-| **QA BROWSER** | `agents/07-qa-browser.md` | Testing E2E en navegador real |
-| **GHOST** | `agents/06-ghost.md` | Agente flexible para tareas variables |
+| Rol | Archivo | Responsabilidad | Fase de Hacking |
+|-----|---------|-----------------|-----------------|
+| **RECON-AGENT** | `agents/01-recon-agent.md` | Footprinting, OSINT, recolección de información | 1. Reconocimiento |
+| **SCAN-AGENT** | `agents/02-scan-agent.md` | Escaneo de puertos, enumeración, detección de vulnerabilidades | 2. Escaneo y Enumeración |
+| **EXPLOIT-AGENT** | `agents/03-exploit-agent.md` | Explotación de vulnerabilidades, obtención de acceso | 3. Obtención de Acceso |
+| **PERSIST-AGENT** | `agents/04-persist-agent.md` | Persistencia, backdoors, movimiento lateral | 4. Mantenimiento de Acceso |
+| **CLEANUP-AGENT** | `agents/05-cleanup-agent.md` | Borrado de huellas, manipulación de logs, forense | 5. Borrado de Huellas |
+| **GHOST** | `agents/06-ghost.md` | Agente flexible para tareas variables en cualquier fase | Multi-fase |
+| **QA-BROWSER** | `agents/07-qa-browser.md` | Validación de seguridad en navegador, tests de payloads | Validación transversal |
 
 ---
 
-*Este archivo sirve como punto de entrada del workflow.*
+*Este archivo sirve como punto de entrada del workflow de hacking.*

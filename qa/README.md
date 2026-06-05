@@ -1,17 +1,18 @@
-# QA Automation — Workflow Harness
+# QA Automation — Hacking Harness
 
-This directory contains browser-based QA automation for the project being developed with this harness.
+This directory contains browser-based security validation for pentesting
+targets being audited with this harness.
 
 ## Structure
 
 ```
 qa/
 ├── qa-runner.mjs           # Generic Playwright test runner
-├── qa-register.mjs         # Registration flow test
-├── setup-qa-local.sh       # Environment setup script
-├── qa-reports/             # Generated reports and screenshots
+├── qa-security.mjs          # Security validation (XSS, CSRF, headers, cookies)
+├── setup-qa-local.sh        # Environment setup script
+├── qa-reports/              # Generated reports and screenshots
 │   └── screenshots/
-└── README.md               # This file
+└── README.md                # This file
 ```
 
 ## Prerequisites
@@ -30,46 +31,37 @@ This installs Playwright and Chromium, then creates the reports directory.
 ## Usage
 
 ```bash
-# Run smoke test against a local server
-node qa/qa-runner.mjs --url http://localhost:5000 --test smoke
+# Security validation against a target
+node qa/qa-security.mjs --url https://target.com
 
-# Run registration test
-node qa/qa-runner.mjs --url https://example.com --test register
-
-# Test on mobile viewport
-node qa/qa-runner.mjs --url http://localhost:5000 --test smoke --viewport mobile
-
-# Run post-deploy regression check
-node qa/qa-runner.mjs --url https://staging.example.com --test regression
-
-# Headed mode (watch the browser)
-node qa/qa-runner.mjs --url http://localhost:5000 --headless false
+# With environment variable
+APP_URL=https://target.com node qa/qa-security.mjs
 ```
 
 ## Available Tests
 
-| Test        | Description |
-|-------------|-------------|
-| `smoke`     | Landing page load, health endpoint, console errors |
-| `register`  | Full registration flow (sign up, form, submit) |
-| `regression`| Quick post-deploy smoke test |
+| Test | Description |
+|------|-------------|
+| `qa-security.mjs` | Full security validation: XSS, CSRF, headers, cookies, clickjacking |
+
+## Security Test Coverage
+
+- XSS Reflected protection
+- CSP, HSTS, X-Frame-Options headers
+- Cookie security flags (HttpOnly, Secure, SameSite)
+- Clickjacking protection (X-Frame-Options / CSP frame-ancestors)
+- Information disclosure via Server header
+- Cross-Origin Resource Sharing (CORS)
 
 ## Adding New Tests
 
-1. Create a new function in `qa-runner.mjs` following the existing pattern
-2. Register it in the `TEST_RUNNERS` object
+1. Create a new function in `qa-security.mjs` following the existing pattern
+2. Register it in the main flow
 3. Add acceptance criteria in `task-qa-browser.md`
 
 ## Configuration
 
-The runner accepts these arguments:
-
-| Arg           | Default                   | Description |
-|---------------|---------------------------|-------------|
-| `--url`       | `http://localhost:5000`    | Base URL of the app |
-| `--test`      | `smoke`                   | Test to run |
-| `--viewport`  | `desktop`                 | `desktop` or `mobile` |
-| `--report-dir`| `qa/qa-reports/`          | Output directory |
-| `--email`     | `qa-test@test.com`        | Test credentials |
-| `--password`  | `QaTest1234`              | Test credentials |
-| `--headless`  | `true`                    | Run headless or headed |
+| Arg | Default | Description |
+|-----|---------|-------------|
+| `APP_URL` | `http://localhost:5000` | Base URL of the target |
+| `REPORT_DIR` | `qa/qa-reports/` | Output directory |

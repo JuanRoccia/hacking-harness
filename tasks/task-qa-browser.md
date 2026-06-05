@@ -1,139 +1,154 @@
-# Tareas Específicas: QA BROWSER
+# Tareas Específicas: QA-BROWSER (Security Validation)
 
 ## Objetivo Principal
-Validar que la aplicación funciona correctamente desde la perspectiva del usuario final,
-detectando bugs visuales, errores de consola, y flujos rotos antes de marcar features como `done`.
+Validar que la aplicación objetivo sea segura desde la perspectiva del
+navegador, detectando vulnerabilidades XSS, CSRF, y problemas de
+configuración de seguridad antes de cerrar el pentesting.
 
 ---
 
-## TASK-QA-001 — Smoke Test
+## TASK-QA-001 — XSS Reflected Test
 
-Verificar que la aplicación responde y carga correctamente.
+Verificar vulnerabilidades de XSS reflejado en parámetros GET/POST.
 
 ### Pasos
 1. Abrir `${APP_URL}` en viewport desktop 1280px
-2. Verificar que la landing page carga sin errores
-3. Screenshot del estado inicial
-4. Consultar `GET /api/health` — debe responder 200
-5. Verificar que no hay errores de consola JS
+2. Identificar formularios y parámetros GET
+3. Inyectar payload `<script>alert('XSS-TEST-001')</script>`
+4. Verificar si el payload se ejecuta en el navegador
+5. Screenshot del resultado
+6. Probar alternativas: `<img src=x onerror=alert(1)>`, `<svg onload=alert(1)>`
 
 ### Checkpoints
-- [ ] Landing page carga sin pantalla en blanco
-- [ ] Health endpoint responde 200
-- [ ] Sin errores de consola (TypeError, 404, CORS)
-- [ ] Screenshot tomado
+- [ ] Payloads básicos no ejecutados
+- [ ] Caracteres especiales escapados/sanitizados
+- [ ] Content-Type correcto (text/html vs application/json)
+- [ ] Screenshot de cada test tomado
 
 ---
 
-## TASK-QA-002 — Registro + Login
+## TASK-QA-002 — XSS Stored Test
 
-Probar el flujo completo de autenticación.
+Verificar vulnerabilidades de XSS almacenado en formularios persistentes.
 
 ### Pasos
-1. Abrir `${APP_URL}`
-2. Localizar botón de registro ("Crear cuenta", "Probá gratis", "Empezar")
-3. Screenshot del formulario antes de interactuar (sin bordes rojos)
-4. Intentar enviar sin datos → verificar validación
-5. Completar con datos válidos: email único (usar timestamp), password
-6. Screenshot antes de enviar
-7. Enviar y verificar resultado
-8. Hacer logout
-9. Login con las credenciales creadas
-10. Screenshot post-login
+1. Ir a formularios que persisten datos (comentarios, perfiles, reseñas)
+2. Completar con payload: `<script>alert('XSS-STORED')</script>`
+3. Screenshot del formulario antes de enviar
+4. Enviar y recargar la página
+5. Verificar si el payload se ejecuta al cargar
+6. Screenshot del resultado
 
 ### Checkpoints
-- [ ] Botón de registro visible y funcional
-- [ ] Formulario sin errores en estado inicial
-- [ ] Validación en español (o idioma del proyecto)
-- [ ] Registro exitoso sin error 500
-- [ ] Login post-registro funciona
-- [ ] Logout destruye sesión
+- [ ] Payloads no se almacenan sin sanitizar
+- [ ] Datos persistidos se escapan al renderizar
+- [ ] No hay XSS almacenado detectable
 
 ---
 
-## TASK-QA-003 — CRUD Entidad Principal
+## TASK-QA-003 — CSRF Test
 
-Crear, visualizar, editar y eliminar la entidad principal del proyecto.
+Verificar protección CSRF en formularios críticos.
 
 ### Pasos
-1. Login con credenciales válidas
-2. Navegar al formulario de creación
-3. Screenshot del formulario vacío
-4. Completar campos requeridos
-5. Screenshot del formulario completo
-6. Enviar y verificar creación
-7. Screenshot del resultado
-8. Editar la entidad creada
-9. Verificar que los cambios persisten
-10. Eliminar la entidad (si aplica)
+1. Identificar formularios críticos (login, cambio password, transferencias)
+2. Verificar presencia de token CSRF en el formulario
+3. Intentar enviar formulario sin token
+4. Intentar enviar con token modificado
+5. Verificar header `SameSite` en cookies de sesión
 
 ### Checkpoints
-- [ ] Formulario de creación accesible
-- [ ] Validación de campos obligatorios funciona
-- [ ] Creación exitosa sin errores
-- [ ] Edición guarda cambios correctamente
-- [ ] Consola sin errores durante todo el flujo
+- [ ] Tokens CSRF presentes en formularios críticos
+- [ ] Tokens CSRF validados server-side
+- [ ] Cookies SameSite configuradas (Lax o Strict)
+- [ ] Origin/Referer headers validados
 
 ---
 
-## TASK-QA-004 — Testing Mobile (375px)
+## TASK-QA-004 — Security Headers
 
-Repetir flujos críticos en viewport móvil.
-
-### Pasos generales
-Para cada flujo de TASK-QA-001 a TASK-QA-003:
-1. Cambiar viewport a 375x812
-2. Repetir los mismos pasos
-3. Documentar diferencias vs desktop
-
-### Checkpoints específicos mobile
-- [ ] Menú de navegación responsive funcional (hamburguesa → drawer)
-- [ ] Formularios usables con teclado táctil (sin zoom forzado)
-- [ ] Botones de ancho completo, sin overflow horizontal
-- [ ] Landing/hero visible correctamente
-
----
-
-## TASK-QA-005 — Admin Panel (si aplica)
-
-Verificar el panel de administración.
+Verificar configuración de headers de seguridad HTTP.
 
 ### Pasos
-1. Login como admin
-2. Ir al dashboard de administración
-3. Screenshot del dashboard con stats
-4. Verificar navegación entre secciones
-5. Probar gestión de usuarios/entidades (CRUD)
+1. Ejecutar desde terminal: `curl -sI ${APP_URL}`
+2. Verificar headers de seguridad presentes
+
+### Headers a verificar
+```bash
+curl -sI https://target.com | grep -iE "strict-transport-security|x-frame-options|x-content-type-options|content-security-policy|referrer-policy|permissions-policy"
+```
 
 ### Checkpoints
-- [ ] Panel de admin carga correctamente
-- [ ] Stats son valores reales (no hardcodeados)
-- [ ] CRUD de gestión funciona
+- [ ] Strict-Transport-Security presente (HSTS)
+- [ ] X-Frame-Options: DENY o SAMEORIGIN
+- [ ] X-Content-Type-Options: nosniff
+- [ ] Content-Security-Policy configurada
+- [ ] Referrer-Policy configurada
 
 ---
 
-## TASK-QA-006 — Regresión Rápida Post-Deploy
+## TASK-QA-005 — Cookie Security
 
-Smoke test de 10 minutos para verificar que nada se rompió tras un deploy.
+Verificar configuración de cookies de sesión.
 
 ### Pasos
-1. Landing carga → screenshot
-2. Login exitoso → screenshot
-3. Dashboard carga con datos → screenshot
-4. Crear entidad mínima (verificar que no hay error 500)
-5. Logout → screenshot
-6. Verificar `/api/health` → 200
+1. Login en la aplicación
+2. Capturar cookie de sesión desde DevTools
+3. Verificar flags de seguridad
+
+### Checkpoints
+- [ ] HttpOnly flag presente (no accesible via JS)
+- [ ] Secure flag presente (solo HTTPS)
+- [ ] SameSite configurado (Lax o Strict)
+- [ ] Path scope apropiado
+- [ ] Expiración razonable
+
+---
+
+## TASK-QA-006 — Clickjacking Test
+
+Verificar protección contra clickjacking.
+
+### Pasos
+1. Crear HTML de prueba:
+```html
+<html>
+<body>
+  <iframe src="${APP_URL}" width="500" height="500"></iframe>
+</body>
+</html>
+```
+2. Verificar si la página se carga en el iframe
+
+### Checkpoints
+- [ ] X-Frame-Options: DENY o SAMEORIGIN presente
+- [ ] O CSP frame-ancestors configurado
+- [ ] Página no cargable en iframe desde otro origen
+
+---
+
+## TASK-QA-007 — Regression Security Smoke Test
+
+Prueba rápida post-deploy para verificar que no se introdujeron regresiones
+de seguridad.
+
+### Pasos
+1. Verificar headers de seguridad → recordatorio
+2. Login con credenciales de prueba
+3. Verificar cookie flags
+4. Probar XSS básico en formulario de búsqueda
+5. Logout → verificar sesión destruida
 
 ### Criterio de PASS/FAIL
-- PASS: todos los pasos sin error, consola sin errores críticos
-- FAIL: cualquier error 500, pantalla en blanco, o loop de auth
+- PASS: todas las verificaciones pasan
+- FAIL: cualquier header faltante, XSS sin sanitizar, o cookie insegura
 
 ---
 
 ## Formato de Reporte
 
 Usar el formato definido en `agents/07-qa-browser.md` (sección "Formato de reporte").
-Incluir health score, screenshots, y pasos de reproducción para cada bug.
+Incluir security score, screenshots, y pasos de reproducción para cada hallazgo.
 
 ---
 

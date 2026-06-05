@@ -1,121 +1,128 @@
-# BUGS-REPORT.md — Plantilla de Reporte de Bugs
+# BUGS-REPORT.md — Plantilla de Reporte de Vulnerabilidades
 
-> Este archivo es una plantilla para documentar bugs encontrados durante el desarrollo.
-> Llena una sección por cada bug encontrado.
+> Este archivo es una plantilla para documentar vulnerabilidades y hallazgos
+> de seguridad descubiertos durante el pentesting.
 
 ---
 
-## Formato de Reporte de Bug
+## Formato de Reporte de Vulnerabilidad
 
 ```markdown
-### [Número] - [Título Breve]
+### VULN-[NUMERO] - [Título Breve]
 
 **Fecha**: [YYYY-MM-DD]
 **Severidad**: 🔴 Crítica / 🟠 Alta / 🟡 Media / 🟢 Baja
-**Agente**: [Rol que encontro el bug]
-**Estado**: Pending / In Progress / Fixed / Won't Fix
+**CVSS**: [Score (ej: 9.1)] / [Vector (ej: AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N)]
+**CVE**: [CVE-XXXX-XXXX si aplica / N/A]
+**Fase**: Recon / Scan / Exploit / Persist / Cleanup
+**Agente**: [Rol que encontró la vulnerabilidad]
+**Estado**: Pending / Confirmed / Fixed / Won't Fix / False Positive
 
 #### Descripción
-[Descripción clara del problema]
+[Descripción clara de la vulnerabilidad]
+
+#### Impacto
+[Qué puede hacer un atacante con esto]
 
 #### Pasos para Reproducir
 1. [Paso 1]
 2. [Paso 2]
 3. [Paso 3]
 
+#### Prueba de Concepto (PoC)
+```bash
+[Comandos, payloads, requests necesarios para demostrar la vulnerabilidad]
+```
+
 #### Comportamiento Esperado
-[Qué debería pasar]
+[Qué debería pasar si está correctamente implementado]
 
 #### Comportamiento Actual
-[Qué está pasando]
+[Qué está pasando (la vulnerabilidad)]
 
 #### Ubicación
-- **Archivo(s)**: [ruta/al/archivo]
-- **Línea(s)**: [números de línea]
-- **Función/Componente**: [nombre]
-
-#### Causa Raíz (si se identificó)
-[Explicación de la causa]
-
-#### Solución Propuesta
-[Descripción de cómo arreglarlo]
+- **URL/Endpoint**: [ruta/al/endpoint]
+- **Parámetro**: [nombre del parámetro]
+- **Método**: [GET/POST/PUT/DELETE]
 
 #### Evidencia
 ```
-[Logs, screenshots, stack traces, etc.]
+[Logs, screenshots, outputs, request/response]
 ```
 
-#### Relacionado
-- Feature: [id de feature en feature_list.json]
-- Otros bugs: [referencias]
+#### Causa Raíz (si se identificó)
+[Explicación de la causa técnica]
+
+#### Recomendación de Remediación
+[Descripción de cómo arreglarlo]
+
+#### Referencias
+- [OWASP: SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
+- [CVE Details](https://www.cvedetails.com/)
 ```
 
 ---
 
-## Bugs Reportados
+## Vulnerabilidades Reportadas
 
-### Ejemplo (borrar al usar)
+### VULN-EJEMPLO - SQL Injection en endpoint de usuarios
 
-### 1 - Error en validación de email
-
-**Fecha**: 2026-05-01
-**Severidad**: 🟠 Alta
-**Agente**: TESTER/DEBUGGER
+**Fecha**: 2026-06-01
+**Severidad**: 🔴 Crítica
+**CVSS**: 9.1 / AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N
+**CVE**: N/A
+**Fase**: Exploit
+**Agente**: EXPLOIT-AGENT
 **Estado**: Pending
 
 #### Descripción
-La validación de email en el formulario de registro no acepta emails válidos con caracteres especiales.
+El endpoint `/api/users/search` es vulnerable a SQL Injection en el parámetro
+`q`. Un atacante no autenticado puede extraer toda la base de datos.
+
+#### Impacto
+Exposición completa de la base de datos incluyendo credenciales de usuarios,
+datos personales y configuraciones del sistema.
 
 #### Pasos para Reproducir
-1. Ir a /register
-2. Ingresar email: "user+test@example.com"
-3. Enviar formulario
+1. Enviar request con payload malicioso
+2. Verificar respuesta con datos de la base de datos
 
-#### Comportamiento Esperado
-El email debería ser aceptado como válido.
-
-#### Comportamiento Actual
-Muestra error "Email inválido".
-
-#### Ubicación
-- **Archivo(s)**: `src/utils/validation.ts`
-- **Línea(s)**: 45-50
-- **Función/Componente**: `validateEmail()`
-
-#### Causa Raíz
-La regex utilizada no permite caracteres especiales como `+` en la parte local del email.
-
-#### Solución Propuesta
-Actualizar la regex para seguir RFC 5322 o usar validator.js.
+#### PoC
+```bash
+curl "https://target.com/api/users/search?q=test' UNION SELECT 1,2,3,4,5,@@version--"
+```
 
 #### Evidencia
 ```
-Error: Email inválido
-Input: user+test@example.com
-Regex actual: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+Response contiene: 1,2,3,4,5,MySQL 8.0.28
 ```
+
+#### Recomendación de Remediación
+- Usar prepared statements / ORM parameterized queries
+- Validar y sanitizar entrada de usuario
+- Implementar WAF con reglas de SQLi
 
 ---
 
 ## Formato para Actualización de Estado
 
 ```markdown
-### [Número] - [Título Breve] - ACTUALIZACIÓN
+### VULN-[NUMERO] - [Título Breve] - ACTUALIZACIÓN
 
 **Fecha**: [YYYY-MM-DD]
-**Estado**: Fixed / In Progress / Won't Fix
-**Agente que arregló**: [Rol]
-**Commit**: [hash del commit si aplica]
+**Estado**: Fixed / In Progress / Won't Fix / False Positive
+**Agente que verificó**: [Rol]
+**Comprobación**: [Descripción de cómo se verificó]
 
 #### Resolución
-[Descripción de cómo se arregló]
+[Descripción de cómo se arregló o por qué no aplica]
 
 #### Verificación
-- [x] Test unitario agregado
-- [x] Test manual pasado
-- [x] Code review aprobado
+- [ ] Vulnerabilidad ya no es reproducible
+- [ ] Prueba de regresión pasada
+- [ ] Remediación validada por QA-BROWSER
 ```
 
 ---
 
-*Esta es una plantilla genérica para workflow-harness*
+*Plantilla de reporte de vulnerabilidades para hacking-harness*

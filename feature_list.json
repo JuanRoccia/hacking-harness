@@ -1,6 +1,6 @@
 {
-  "project": "workflow-harness",
-  "description": "Sistema de orquestación de workflow para agentes de IA. Estructura genérica para gestionar proyectos mediante múltiples agentes especializados.",
+  "project": "hacking-harness",
+  "description": "Sistema de orquestación de agentes de IA para auditorías de seguridad y pentesting estructurado por fases de hacking.",
   "rules": {
     "one_feature_at_a_time": true,
     "require_tests_to_close": true,
@@ -11,78 +11,78 @@
     {
       "id": 1,
       "name": "init_script",
-      "title": "Script de inicialización del entorno",
-      "description": "Crear init.sh que verifique la integridad del harness y recopile contexto del proyecto.",
+      "title": "Script de inicialización del entorno de hacking",
+      "description": "Crear init.sh que verifique la integridad del harness y detecte herramientas de hacking disponibles (nmap, gobuster, metasploit, etc.).",
       "priority": "high",
       "acceptance": [
         "Existe init.sh ejecutable",
         "Verifica estructura de directorios (agents/, tasks/, skills/, tests/)",
-        "Verifica archivos base (AGENTS.md, feature_list.json, etc.)",
-        "Recopila información del proyecto mediante preguntas interactivas",
-        "Genera .workflow-config.json con la configuración",
-        "Crea .gitignore si se requiere para GitHub"
+        "Verifica herramientas de hacking comunes (nmap, curl, python3, etc.)",
+        "Recopila información del objetivo mediante preguntas interactivas",
+        "Genera .workflow-config.json con la configuración"
       ],
       "status": "done"
     },
     {
       "id": 2,
       "name": "agents_md_entrypoint",
-      "title": "Punto de entrada AGENTS.md",
-      "description": "AGENTS.md genérico como punto de entrada del workflow.",
+      "title": "Punto de entrada AGENTS.md con fases de hacking",
+      "description": "AGENTS.md genérico como punto de entrada del workflow de hacking con roles mapeados a las 5 fases de pentesting.",
       "priority": "high",
       "acceptance": [
         "Existe AGENTS.md como punto de entrada principal",
         "Referencia a init.sh como paso obligatorio",
         "Referencia a progress/current.md para estado de sesión",
-        "Referencia a feature_list.json para gestión de tareas",
-        "Mapa del repositorio adaptado a estructura genérica",
-        "Reglas duras y ciclo de vida de sesión definidos",
-        "Sin referencias a proyectos específicos (DIROCCO, BuscoInmueble)"
+        "Mapa del repositorio adaptado a estructura de hacking",
+        "7 roles definidos (recon, scan, exploit, persist, cleanup, ghost, qa)",
+        "Reglas duras y ciclo de vida de sesión definidos"
       ],
       "status": "done"
     },
     {
       "id": 3,
-      "name": "clean_project_references",
-      "title": "Limpiar referencias de proyectos específicos",
-      "description": "Eliminar o adaptar contenido en agents/, tasks/, y archivos MD que referencien proyectos específicos (real estate, e-commerce).",
+      "name": "agents_roles",
+      "title": "Definición de los 7 roles de hacking",
+      "description": "Crear archivos de definición de roles en agents/ para los 7 agentes especializados en pentesting.",
       "priority": "high",
       "acceptance": [
-        "Archivos en agents/ son genéricos y reutilizables",
-        "Archivos en tasks/ no referencian proyectos específicos",
-        "TASK-PRINCIPAL.md es genérico o se elimina/adapta",
-        "BUGS-REPORT.md es una plantilla genérica",
-        "TESTING-MANUAL.md es una guía genérica",
-        "initial-prompt.txt se elimina o adapta a uso general"
+        "agents/01-recon-agent.md con metodología de OSINT y footprinting",
+        "agents/02-scan-agent.md con técnicas de escaneo y enumeración",
+        "agents/03-exploit-agent.md con vectores de explotación",
+        "agents/04-persist-agent.md con técnicas de persistencia",
+        "agents/05-cleanup-agent.md con técnicas de limpieza forense",
+        "agents/06-ghost.md con máscaras orientadas a hacking",
+        "agents/07-qa-browser.md con validación de seguridad en navegador"
       ],
       "status": "done"
     },
     {
       "id": 4,
-      "name": "progress_structure",
-      "title": "Estructura de progreso (progress/)",
-      "description": "Crear directorio progress/ con current.md e history.md para seguimiento de sesiones.",
+      "name": "tasks_by_phase",
+      "title": "Tareas específicas por fase de hacking",
+      "description": "Crear archivos de tareas en tasks/ para cada agente con objetivos, técnicas y herramientas específicas de cada fase.",
       "priority": "high",
       "acceptance": [
-        "Existe directorio progress/",
-        "progress/current.md con plantilla de sesión actual",
-        "progress/history.md como bitácora append-only",
-        "AGENTS.md referencia correctamente estos archivos",
-        "init.sh verifica existencia de progress/"
+        "tasks/task-recon.md con OSINT, Google Dorking, WHOIS, DNS recon",
+        "tasks/task-scan.md con Nmap, gobuster, nikto, vuln detection",
+        "tasks/task-exploit.md con SQLi, XSS, RCE, Metasploit",
+        "tasks/task-persist.md con backdoors, webshells, lateral movement",
+        "tasks/task-cleanup.md con log wiping, timestomp, informe",
+        "tasks/task-ghost.md con máscaras de hacking",
+        "tasks/task-qa-browser.md con validación de payloads en navegador"
       ],
       "status": "done"
     },
     {
       "id": 5,
-      "name": "docs_structure",
-      "title": "Estructura de documentación (docs/)",
-      "description": "Crear directorio docs/ con architecture.md, conventions.md y verification.md.",
+      "name": "docs_system",
+      "title": "Sistema de documentación de hacking methodology",
+      "description": "Crear docs/ con metodología de pentesting, convenciones y criterios de verificación.",
       "priority": "medium",
       "acceptance": [
-        "Existe directorio docs/",
-        "docs/architecture.md define qué es 'buen trabajo' en el harness",
+        "docs/methodology.md define las 5 fases del pentesting",
         "docs/conventions.md con reglas de estilo y estructura",
-        "docs/verification.md con criterios de verificación",
+        "docs/verification.md con criterios de verificación de hallazgos",
         "AGENTS.md referencia estos archivos en el mapa",
         "init.sh verifica existencia de docs/"
       ],
@@ -90,27 +90,29 @@
     },
     {
       "id": 6,
-      "name": "skills_audit",
-      "title": "Auditoría y limpieza de skills",
-      "description": "Revisar skills/ para asegurar que sean genéricos y útiles para cualquier proyecto.",
+      "name": "skills_library",
+      "title": "Skills especializados en herramientas de hacking",
+      "description": "Crear skills/ con guías de herramientas y técnicas de hacking para cada fase.",
       "priority": "medium",
       "acceptance": [
-        "Skills son genéricos y reutilizables",
-        "Eliminar o adaptar skills muy específicos (PDF, GSAP si no son necesarios)",
-        "Documentar cada skill con propósito y cuándo usar",
-        "AGENTS.md tiene referencias correctas a skills/"
+        "skill-recon-osint.md con técnicas de OSINT y footprinting",
+        "skill-scanning.md con Nmap, enumeración web, vuln scanning",
+        "skill-exploitation.md con SQLi, XSS, RCE, Metasploit",
+        "skill-persistence.md con backdoors, webshells, C2",
+        "skill-cleanup.md con limpieza forense y manipulación de logs",
+        "skill-qa-automation.md con validación de seguridad en navegador"
       ],
       "status": "done"
     },
     {
       "id": 7,
       "name": "tests_structure",
-      "title": "Estructura de tests",
+      "title": "Estructura de tests del harness de hacking",
       "description": "Asegurar que tests/ tenga la estructura adecuada para tests automáticos del harness.",
       "priority": "low",
       "acceptance": [
         "tests/ tiene estructura clara",
-        "Existen tests de ejemplo o plantillas",
+        "Existen tests de ejemplo validando estructura",
         "init.sh verifica y ejecuta tests si existen",
         "Documentación sobre cómo agregar tests"
       ],
@@ -118,60 +120,56 @@
     },
     {
       "id": 8,
-      "name": "qa_structure",
-      "title": "Estructura de QA Automation (qa/)",
-      "description": "Crear directorio qa/ con scripts de Playwright, setup, y documentación para testing E2E en navegador real.",
+      "name": "qa_security_tests",
+      "title": "Scripts de validación de seguridad (qa/)",
+      "description": "Adaptar qa/ con scripts de Playwright para validación de vulnerabilidades web en navegador real.",
       "priority": "high",
       "acceptance": [
-        "Existe directorio qa/",
-        "qa/qa-runner.mjs es un runner genérico configurable por CLI",
-        "qa/qa-register.mjs prueba el flujo de registro",
+        "qa/qa-runner.mjs configurado para testing de seguridad",
+        "qa/qa-security.mjs con pruebas de XSS, CSRF, headers de seguridad",
         "qa/setup-qa-local.sh instala Playwright y prepara el entorno",
-        "qa/README.md documenta uso y configuración",
-        "init.sh verifica existencia de qa/ y sus scripts"
+        "qa/README.md documenta uso y casos de prueba de seguridad"
       ],
       "status": "done"
     },
     {
       "id": 9,
-      "name": "qa_browser_agent",
-      "title": "Agente QA BROWSER (07-qa-browser.md)",
-      "description": "Definir el 7mo agente especializado en testing E2E con navegador real.",
+      "name": "prompt_system",
+      "title": "Sistema de Prompts para sesiones de pentesting",
+      "description": "Adaptar prompts/ con template estándar de 6 secciones para sesiones de hacking estructuradas.",
       "priority": "high",
       "acceptance": [
-        "Existe agents/07-qa-browser.md con definición de rol",
-        "Existe tasks/task-qa-browser.md con tareas específicas",
-        "El agente lista flujos genéricos (smoke, register, CRUD, mobile, regression)",
-        "Define formato de reporte con health score",
-        "AGENTS.md referencia al agente QA BROWSER"
+        "prompts/prompt-template.md con template de 6 secciones",
+        "AGENTS.md referencia prompts/ en el mapa del repositorio",
+        "init.sh verifica existencia de prompts/"
       ],
       "status": "done"
     },
     {
       "id": 10,
-      "name": "qa_automation_skill",
-      "title": "Skill de QA Automation (skill-qa-automation.md)",
-      "description": "Crear skill de QA automation con patrones de Playwright, page object, y buenas prácticas.",
-      "priority": "medium",
+      "name": "bug_report_vulnerability",
+      "title": "Plantilla de reporte de vulnerabilidades",
+      "description": "Adaptar 07-BUGS-REPORT.md a plantilla de reporte de vulnerabilidades con CVSS, PoC y remediación.",
+      "priority": "high",
       "acceptance": [
-        "Existe skills/skill-qa-automation.md",
-        "Documenta patrones de testing (page object, console monitoring, screenshots)",
-        "Incluye mejores prácticas y referencias a scripts de qa/"
+        "07-BUGS-REPORT.md con campos de CVSS score",
+        "Sección de Proof of Concept (PoC)",
+        "Sección de remediación recomendada",
+        "Clasificación por severidad (Critical/High/Medium/Low)"
       ],
       "status": "done"
     },
     {
       "id": 11,
-      "name": "prompt_system",
-      "title": "Sistema de Prompts Reutilizables",
-      "description": "Crear prompts/ con template estándar de 6 secciones para formalizar la metodología de prompts en el harness.",
+      "name": "readme_hacking_harness",
+      "title": "README del Hacking Harness",
+      "description": "README.md completo documentando el Hacking Harness, sus fases, agentes y cómo usarlo.",
       "priority": "high",
       "acceptance": [
-        "Existe directorio prompts/",
-        "prompts/prompt-template.md con template de 6 secciones",
-        "AGENTS.md referencia prompts/ en el mapa del repositorio",
-        "init.sh verifica existencia de prompts/",
-        "init.sh pasa sin errores"
+        "README.md describe el propósito del hacking harness",
+        "Documenta las 5 fases de pentesting",
+        "Lista los 7 agentes con sus responsabilidades",
+        "Incluye instrucciones de uso y ejemplos"
       ],
       "status": "done"
     }

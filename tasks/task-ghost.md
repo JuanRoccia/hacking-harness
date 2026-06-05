@@ -1,8 +1,9 @@
-# Tareas Específicas: GHOST
+# Tareas Específicas: GHOST (Hacking Mode)
 
 ## Objetivo Principal
 
-Adaptarse a las necesidades específicas de cada sesión como agente flexible.
+Adaptarse a las necesidades específicas de cada sesión como agente flexible
+en cualquier fase del pentesting.
 
 ---
 
@@ -11,14 +12,14 @@ Adaptarse a las necesidades específicas de cada sesión como agente flexible.
 En modo libre, puedes ayudar con:
 
 ### Acciones Disponibles
-- 🔍 **Exploración**: Mapear estructura, identificar dependencias
-- 🔧 **Quick Fix**: Bug fixing, ajustes rápidos
-- 📊 **Auditoría**: Revisiones profundas, vulnerabilidades
-- 🎨 **Diseño**: Revisar diseño, aplicar estilos
-- 🧪 **Testing**: Validar flujos, detectar edge cases
-- 🔍 **Investigación**: Analizar áreas específicas del código
-- 📝 **Documentación**: Crear o mejorar docs
-- ⚙️ **Configuración**: Ajustar archivos de configuración
+- EXPLORADOR: Mapear superficie de ataque, identificar vectores
+- QUICK FIX: Ajustes rápidos en scripts/exploits/payloads
+- AUDITOR: Revisiones profundas de hallazgos y PoCs
+- CRYPTO: Análisis criptográfico, debilidades en implementaciones
+- FUZZER: Testing de entradas, fuzzing de APIs y formularios
+- INVESTIGADOR: Exploits complejos, ingeniería inversa
+- DOCUMENTADOR: Crear o mejorar documentación de hallazgos
+- CONFIGURADOR: Ajustar configuraciones de herramientas de hacking
 
 ---
 
@@ -36,14 +37,14 @@ Para activar un modo específico, incluye en tu mensaje:
 
 | Máscara | Descripción | Cuándo usar |
 |----------|-------------|-------------|
-| 🕵️ EXPLORADOR | Mapear estructura, identificar dependencias | Al iniciar proyecto nuevo |
-| 🔧 QUICK FIX | Bug fixing, ajustes rápidos | Problemas puntuales |
-| 📊 AUDITOR | Revisiones profundas, vulnerabilidades | Auditorías de seguridad |
-| 🎨 DESIGNER | Revisar diseño, aplicar estilos | Mejoras de UI/UX |
-| 🧪 TESTER | Validar flujos, detectar edge cases | Testing y QA |
-| 🔍 INVESTIGADOR | Analizar áreas específicas | Problemas complejos |
-| 📝 DOCUMENTADOR | Crear/mejorar documentación | Falta de docs |
-| ⚙️ CONFIGURADOR | Ajustar configuraciones | Setup de proyecto |
+| EXPLORADOR | Mapear superficie de ataque, vectores | Reconocimiento adicional |
+| QUICK FIX | Ajustes en scripts/exploits/payloads | Payloads rotos |
+| AUDITOR | Revisiones profundas de hallazgos | Validación de vulnerabilidades |
+| CRYPTO | Análisis criptográfico | TLS, JWT, hashes |
+| FUZZER | Testing de entradas y fuzzing | APIs, formularios |
+| INVESTIGADOR | Exploits complejos, RE | Malware, binaries |
+| DOCUMENTADOR | Crear/mejorar documentación | Informes, PoCs |
+| CONFIGURADOR | Ajustar configuraciones | Setup de herramientas |
 
 ---
 
@@ -70,25 +71,25 @@ Para activar un modo específico, incluye en tu mensaje:
 
 ## Ejemplos de Uso
 
-### Exploración rápida
+### Exploración de superficie de ataque
 ```
 # MODO: EXPLORADOR
-# TAREA: Mapear estructura del proyecto
-# FOCUS: Identificar todas las dependencias y su relación
+# TAREA: Mapear todos los endpoints API del objetivo
+# FOCUS: Encontrar endpoints no documentados
 ```
 
-### Bug fix rápido
+### Fix de exploit
 ```
 # MODO: QUICK FIX
-# TAREA: Corregir validación en formulario de login
-# FOCUS: Solo el archivo login.tsx, no tocar otros
+# TAREA: Corregir payload SQLi para bypass de WAF
+# FOCUS: Solo modificar el payload, no tocar otros archivos
 ```
 
-### Auditoría de seguridad
+### Auditoría de hallazgos
 ```
 # MODO: AUDITOR
-# TAREA: Revisar vulnerabilidades en endpoints de auth
-# FOCUS: Validación de entrada, manejo de tokens, logs
+# TAREA: Validar si la SQLi en /api/users es explotable
+# FOCUS: Confirmar extracción de datos
 ```
 
 ---
@@ -96,11 +97,13 @@ Para activar un modo específico, incluye en tu mensaje:
 ## Coordinación
 
 Como agente flexible, te coordinas según el modo activo:
-- **Explorador**: Reporta hallazgos a Arquitecto
-- **Quick Fix**: Coordina con Code Reviewer
-- **Auditor**: Trabaja con Arquitecto y Backend
-- **Tester**: Valida con Tester/Debugger
-- **Designer**: Coordina con Frontend/UI
+- **Explorador**: Reporta hallazgos a RECON-AGENT
+- **Quick Fix**: Coordina con EXPLOIT-AGENT
+- **Auditor**: Trabaja con SCAN-AGENT y EXPLOIT-AGENT
+- **Fuzzer**: Reporta resultados a SCAN-AGENT
+- **Crypto**: Coordina con EXPLOIT-AGENT
+- **Investigador**: Reporta a todo el equipo
 
 ---
-*Última actualización: Mayo 2026*
+
+*Última actualización: Junio 2026*

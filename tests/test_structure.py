@@ -1,4 +1,4 @@
-"""Tests para validar estructura del harness."""
+"""Tests para validar estructura del Hacking Harness."""
 from __future__ import annotations
 
 import os
@@ -62,9 +62,9 @@ class TestHarnessStructure(unittest.TestCase):
         self.assertGreater(len(content), 100)
 
     def test_docs_files_exist(self) -> None:
-        """docs/ debe tener arquitecture.md, conventions.md, verification.md."""
+        """docs/ debe tener methodology.md, conventions.md, verification.md."""
         required_docs = [
-            "docs/architecture.md",
+            "docs/methodology.md",
             "docs/conventions.md",
             "docs/verification.md"
         ]
@@ -81,13 +81,13 @@ class TestHarnessStructure(unittest.TestCase):
             self.assertTrue(os.path.exists(file), f"Falta: {file}")
 
     def test_agent_files_exist(self) -> None:
-        """agents/ debe tener los 7 archivos de agentes."""
+        """agents/ debe tener los 7 archivos de agentes de hacking."""
         expected_agents = [
-            "agents/01-arquitecto.md",
-            "agents/02-code-reviewer.md",
-            "agents/03-tester-debugger.md",
-            "agents/04-frontend-ui.md",
-            "agents/05-backend.md",
+            "agents/01-recon-agent.md",
+            "agents/02-scan-agent.md",
+            "agents/03-exploit-agent.md",
+            "agents/04-persist-agent.md",
+            "agents/05-cleanup-agent.md",
             "agents/06-ghost.md",
             "agents/07-qa-browser.md"
         ]
@@ -95,13 +95,13 @@ class TestHarnessStructure(unittest.TestCase):
             self.assertTrue(os.path.exists(agent), f"Falta: {agent}")
 
     def test_task_files_exist(self) -> None:
-        """tasks/ debe tener los 7 archivos de tareas."""
+        """tasks/ debe tener los 7 archivos de tareas de hacking."""
         expected_tasks = [
-            "tasks/task-arquitecto.md",
-            "tasks/task-code-reviewer.md",
-            "tasks/task-tester.md",
-            "tasks/task-frontend.md",
-            "tasks/task-backend.md",
+            "tasks/task-recon.md",
+            "tasks/task-scan.md",
+            "tasks/task-exploit.md",
+            "tasks/task-persist.md",
+            "tasks/task-cleanup.md",
             "tasks/task-ghost.md",
             "tasks/task-qa-browser.md"
         ]
@@ -131,10 +131,10 @@ class TestSpecsStructure(unittest.TestCase):
             self.assertTrue(os.path.exists(file), f"Falta: {file}")
 
     def test_qa_files_exist(self) -> None:
-        """qa/ debe tener runner, register, setup y README."""
+        """qa/ debe tener runner, security, setup y README."""
         expected = [
             "qa/qa-runner.mjs",
-            "qa/qa-register.mjs",
+            "qa/qa-security.mjs",
             "qa/setup-qa-local.sh",
             "qa/README.md"
         ]
