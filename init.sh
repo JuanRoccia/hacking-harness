@@ -29,7 +29,7 @@ echo ""
 
 echo "── 1. Verificando estructura del harness ──────────────"
 
-for dir in agents tasks skills tests qa prompts audits user; do
+for dir in agents tasks skills tests qa prompts audits user tools; do
   if [ ! -d "$dir" ]; then
     fail "Falta directorio: $dir/"
     EXIT_CODE=1
@@ -104,7 +104,32 @@ for tool in "${OPTIONAL_TOOLS[@]}"; do
 done
 
 echo ""
-echo "── 7. Verificando QA Automation ─────────────────────"
+echo "── 7. Verificando wrappers de herramientas (tools/) ──"
+
+WRAPPER_COUNT=$(find tools/wrappers/ -name "*wrapper.py" 2>/dev/null | wc -l)
+if [ "$WRAPPER_COUNT" -gt 0 ]; then
+  ok "Wrappers disponibles: $WRAPPER_COUNT"
+  for wrapper in tools/wrappers/*wrapper.py; do
+    name=$(basename "$wrapper" .py)
+    tool_name=$(echo "$name" | sed 's/-wrapper//')
+    if command -v "$tool_name" >/dev/null 2>&1; then
+      ok "  $name → $tool_name instalado"
+    else
+      warn "  $name → $tool_name no encontrado (wrapper presente pero herramienta ausente)"
+    fi
+  done
+else
+  warn "No hay wrappers en tools/wrappers/"
+fi
+
+if [ -f "tools/schemas/tool-output-schema.json" ]; then
+  ok "Schema unificado de salida: tools/schemas/tool-output-schema.json"
+else
+  warn "Falta schema unificado: tools/schemas/tool-output-schema.json"
+fi
+
+echo ""
+echo "── 8. Verificando QA Automation ─────────────────────"
 
 for f in "qa/qa-runner.mjs" "qa/qa-security.mjs" "qa/setup-qa-local.sh" "qa/README.md"; do
   if [ ! -f "$f" ]; then
@@ -115,7 +140,7 @@ for f in "qa/qa-runner.mjs" "qa/qa-security.mjs" "qa/setup-qa-local.sh" "qa/READ
 done
 
 echo ""
-echo "── 8. Verificando skills disponibles ──────────────────"
+echo "── 9. Verificando skills disponibles ──────────────────"
 
 SKILL_COUNT=$(find skills/ -type f 2>/dev/null | wc -l)
 if [ "$SKILL_COUNT" -eq 0 ]; then
@@ -125,7 +150,7 @@ else
 fi
 
 echo ""
-echo "── 9. Ejecutando tests del harness ──────────────────"
+echo "── 10. Ejecutando tests del harness ──────────────────"
 
 if [ "${WORKFLOW_TEST:-0}" -eq 1 ]; then
   info "Modo test detectado, omitiendo ejecución de tests"
@@ -169,7 +194,7 @@ else
 fi
 
 echo ""
-echo "── 10. Generando configuración inicial ─────────────────"
+echo "── 11. Generando configuración inicial ─────────────────"
 
 if [ -t 0 ]; then
   info "Para configurar el workflow, necesito información sobre el objetivo:"
@@ -245,7 +270,7 @@ EOF
 fi
 
 echo ""
-echo "── 11. Verificando capa de specs ────────────────────"
+echo "── 12. Verificando capa de specs ────────────────────"
 
 if [ -d "specs" ]; then
   if [ -f "specs/_template.md" ]; then

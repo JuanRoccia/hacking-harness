@@ -79,9 +79,10 @@ FASE 5: BORRADO DE HUELLAS
 bash init.sh
 ```
 El script verifica:
-- Estructura de directorios (agents/, tasks/, skills/, tests/)
+- Estructura de directorios (agents/, tasks/, skills/, tests/, tools/)
 - Archivos base (AGENTS.md, feature_list.json)
 - Herramientas de hacking disponibles (nmap, curl, python3, etc.)
+- Wrappers de herramientas externas (tools/wrappers/)
 - Tests del harness
 
 Genera: `.workflow-config.json` con la configuración.
@@ -97,6 +98,25 @@ Genera: `.workflow-config.json` con la configuración.
 7. Ejecutar init.sh → verificar
 8. Marcar tarea "done" en feature_list.json
 ```
+
+### 3. Flujo Continuo con Prompts (Workflow Loop)
+
+Cada sesión de trabajo sigue el ciclo definido en `prompts/prompt-template.md`:
+
+```
+1. Elegir una feature pending de feature_list.json
+2. Crear prompts/prompt-<feature>.md usando el template de 6 secciones
+3. Implementar siguiendo la tarea técnica y restricciones
+4. Al cerrar la sesión:
+   a. Ejecutar init.sh → todo verde
+   b. Marcar feature como done en feature_list.json
+   c. Si surgen sub-tareas: agregarlas a feature_list.json y crear sus prompts
+   d. Mover resumen de current.md a history.md
+5. Repetir: siguiente feature pending
+```
+
+Este ciclo permite que el harness evolucione de forma incremental y trazable,
+donde cada feature nueva genera sus propios prompts y posibles sub-tareas.
 
 ### 3. Ciclo de Vida de una Auditoría
 ```
@@ -122,6 +142,13 @@ FASE 1 ──> FASE 2 ──> FASE 3 ──> FASE 4 ──> FASE 5
 | `init.sh` | Verificación automática del entorno |
 | `.workflow-config.json` | Configuración generada automáticamente |
 
+### Integración de Herramientas
+| Archivo | Propósito |
+|---------|-----------|
+| `tools/wrappers/` | Wrappers unificados (nmap, msf, burp, caido, sqlmap, ffuf) |
+| `tools/schemas/tool-output-schema.json` | Schema de salida unificada JSON |
+| `tools/README.md` | Documentación de wrappers |
+
 ### Documentación del Harness
 | Archivo | Propósito |
 |---------|-----------|
@@ -129,11 +156,12 @@ FASE 1 ──> FASE 2 ──> FASE 3 ──> FASE 4 ──> FASE 5
 | `docs/conventions.md` | Reglas de estilo y estructura |
 | `docs/verification.md` | Cómo verificar hallazgos de seguridad |
 
-### Plantillas
+### Plantillas y Prompts
 | Archivo | Propósito |
 |---------|-----------|
 | `progress/current.md` | Qué hacer en la sesión actual |
 | `progress/history.md` | Bitácora de sesiones anteriores |
+| `prompts/prompt-template.md` | Template de 6 secciones para prompts de features |
 | `07-BUGS-REPORT.md` | Plantilla para reportar vulnerabilidades |
 | `08-LOOP.md` | Control de iteraciones (opcional) |
 
@@ -149,12 +177,13 @@ FASE 1 ──> FASE 2 ──> FASE 3 ──> FASE 4 ──> FASE 5
 | 3 | agents_roles | done |
 | 4 | tasks_by_phase | done |
 | 5 | docs_system | done |
-| 6 | skills_library | in_progress |
+| 6 | skills_library | done |
 | 7 | tests_structure | done |
 | 8 | qa_security_tests | done |
 | 9 | prompt_system | done |
 | 10 | bug_report_vulnerability | done |
 | 11 | readme_hacking_harness | done |
+| 12 | tool_wrappers_system | done |
 
 ---
 
@@ -166,12 +195,17 @@ FASE 1 ──> FASE 2 ──> FASE 3 ──> FASE 4 ──> FASE 5
 - **Git** (opcional) - Para control de versiones
 
 ### Herramientas de Hacking (detectadas por init.sh)
-- **nmap** - Escaneo de puertos y servicios
-- **curl** - Peticiones HTTP y APIs
-- **gobuster/dirsearch** - Enumeración web
-- **Metasploit** (opcional) - Framework de explotación
-- **sqlmap** (opcional) - SQL Injection automation
-- **Burp Suite** (opcional) - Proxy de interceptación
+| Herramienta | Uso | Wrapper |
+|-------------|-----|---------|
+| **nmap** | Escaneo de puertos y servicios | `tools/wrappers/nmap-wrapper.py` |
+| **curl** | Peticiones HTTP y APIs | — |
+| **gobuster/ffuf** | Enumeración web / fuzzing | `tools/wrappers/ffuf-wrapper.py` |
+| **Metasploit** (opcional) | Framework de explotación | `tools/wrappers/msf-wrapper.py` |
+| **sqlmap** (opcional) | SQL Injection automation | `tools/wrappers/sqlmap-wrapper.py` |
+| **Burp Suite** (opcional) | Proxy de interceptación / escáner | `tools/wrappers/burp-wrapper.py` |
+| **Caido** (opcional) | Proxy de interceptación moderno | `tools/wrappers/caido-wrapper.py` |
+| **hydra** (opcional) | Fuerza bruta de credenciales | — |
+| **john** (opcional) | Crackeo de hashes | — |
 
 ---
 

@@ -172,6 +172,23 @@
         "Incluye instrucciones de uso y ejemplos"
       ],
       "status": "done"
+    },
+    {
+      "id": 12,
+      "name": "tool_wrappers_system",
+      "title": "Sistema de Wrappers para Integración de Herramientas Externas",
+      "description": "Crear tools/ con wrappers unificados (nmap, msf, burp, caido, sqlmap, ffuf) que normalicen la salida de herramientas externas a un formato JSON común, detectables por init.sh y orquestables por agentes via skills.",
+      "priority": "high",
+      "acceptance": [
+        "tools/wrappers/ contiene al menos 3 wrappers funcionales",
+        "tools/schemas/tool-output-schema.json define el formato unificado de salida",
+        "tools/README.md documenta uso de los wrappers",
+        "init.sh detecta y reporta el estado de cada wrapper",
+        "skills/skill-tool-wrappers.md documenta cómo usar los wrappers desde agentes",
+        "AGENTS.md referencia tools/ en el mapa del repositorio",
+        "init.sh pasa sin errores"
+      ],
+      "status": "done"
     }
   ]
 }

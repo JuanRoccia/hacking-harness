@@ -96,6 +96,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 | `qa/`                        | Scripts de validación de seguridad (Playwright)           | Antes de marcar tarea como `done` |
 | `prompts/`                   | Templates de prompts reutilizables (6-sección)            | Al planificar una nueva fase |
 | `user/`                      | Documentación para usuarios del harness                   | Referencia externa |
+| `tools/`                     | Wrappers unificados para herramientas externas (nmap, msf, burp, caido, sqlmap, ffuf) | Al integrar herramientas externas |
 | `init.sh`                    | Script de verificación de entorno de hacking              | Al iniciar sesión |
 
 ## 3. Reglas duras (no negociables)

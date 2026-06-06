@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tool Wrapper Unified Output",
+  "description": "Formato unificado de salida para todos los wrappers de herramientas externas.",
+  "type": "object",
+  "required": ["tool", "status", "timestamp"],
+  "properties": {
+    "tool": {
+      "type": "string",
+      "description": "Nombre de la herramienta (e.g. nmap, msf, burp, caido, sqlmap, ffuf)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "error", "timeout", "no_target"],
+      "description": "Estado de la ejecucion"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp de ejecucion"
+    },
+    "target": {
+      "type": "string",
+      "description": "Target analizado (IP, dominio, URL)"
+    },
+    "error": {
+      "type": "string",
+      "description": "Mensaje de error si status != success"
+    },
+    "command": {
+      "type": "string",
+      "description": "Comando exacto ejecutado"
+    },
+    "summary": {
+      "type": "object",
+      "description": "Resumen de resultados (tool-specific)",
+      "properties": {
+        "total": { "type": "integer" },
+        "open": { "type": "integer" },
+        "vulnerable": { "type": "integer" },
+        "findings": { "type": "integer" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "Lista de hallazgos encontrados",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "evidence": { "type": "string" },
+          "port": { "type": "integer" },
+          "protocol": { "type": "string" },
+          "url": { "type": "string" },
+          "payload": { "type": "string" },
+          "recommendation": { "type": "string" },
+          "raw": { "type": "string" }
+        }
+      }
+    },
+    "raw_output": {
+      "type": "string",
+      "description": "Salida cruda original de la herramienta"
+    },
+    "duration_ms": {
+      "type": "integer",
+      "description": "Duracion de la ejecucion en milisegundos"
+    }
+  }
+}
