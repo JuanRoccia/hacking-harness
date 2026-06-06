@@ -70,6 +70,9 @@ Lee los siguientes archivos **en este orden** antes de empezar:
 1. Ejecuta `./init.sh` — debe salir todo verde.
 2. Si la feature está completa:
    - Marca `status: "done"` en `feature_list.json`.
+   - **Si la feature genera nuevas sub-tareas** (features hijas o derivadas):
+     1. Agrega las nuevas entradas a `feature_list.json` con `status: "pending"` y la prioridad correspondiente.
+     2. Para cada nueva feature, crea un archivo en `prompts/prompt-<feature-name>.md` copiando este template y completando todas las secciones (incluyendo este mismo cierre de sesión actualizado).
    - Commit message: `<feature-name>: <descripción concisa>`
 3. Mueve el resumen de `progress/current.md` al final de `progress/history.md`.
 4. Vacía `progress/current.md` dejando solo la plantilla.

@@ -4,6 +4,19 @@
 
 ---
 
+## ¿Qué es Harness Engineering?
+
+**Harness Engineering** es la disciplina de diseñar y construir el harness (arnés) que orquesta, coordina y automatiza flujos de trabajo complejos de seguridad. En lugar de ejecutar herramientas de forma aislada, un harness engineering define:
+
+- **Puntos de integración** para conectar herramientas dispares (nmap, Burp Suite, Metasploit, scripts propios)
+- **Flujos estructurados** que guían al operador o agente IA paso a paso por las fases del pentesting
+- **Gestión de estado y trazabilidad** para saber qué se hizo, cuándo y con qué resultado
+- **Mecanismos de verificación** que aseguran la integridad del proceso antes de avanzar
+
+Este repositorio es un **Harness de Pentesting**: un sistema que envuelve las herramientas y metodologías en una capa de orquestación para que agentes de IA puedan ejecutar auditorías de seguridad de forma estructurada, reproducible y trazable.
+
+---
+
 ## Descripción
 
 **Hacking Harness** es un sistema de orquestación diseñado para:
